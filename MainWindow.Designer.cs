@@ -37,7 +37,7 @@
             ClientSize = new Size(1092, 665);
             Name = "MainWindow";
             Text = "Truffles";
-            Load += Form1_Load;
+            Load += MainWindowLoad;
             ResumeLayout(false);
         }
 
