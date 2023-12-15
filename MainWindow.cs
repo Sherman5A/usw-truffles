@@ -20,12 +20,12 @@ namespace Truffles
         List<(int, int)> truffleLocations = new();
         List<(int, int)> trapLocations = new();
 
-
         // Number of squares containing truffles
         int numTruffles = 10;
         // Number of squares containing traps
         int numTraps = 8;
 
+        (int col, int row) playerLocation;
 
 
         public Panel gameSpace = new Panel();
@@ -42,6 +42,13 @@ namespace Truffles
             PlotTraps();
 
             AddPlayer();
+            PlayerOnTop();
+        }
+
+        private void PlayerOnTop()
+        {
+            Label lblPiggy = this.Controls.Find("lblPLayer", true).FirstOrDefault() as Label;
+            lblPiggy.BringToFront();
         }
 
         /// <summary>
@@ -59,7 +66,8 @@ namespace Truffles
                 if (!trapLocations.Contains(locationAttempt) &&
                     !truffleLocations.Contains(locationAttempt))
                 {
-                    AddLabel(locationAttempt, Color.Magenta);
+                    playerLocation = locationAttempt;
+                    AddLabel(locationAttempt, Color.Magenta, "lblPlayer");
                     break;
                 }
             }
@@ -68,7 +76,7 @@ namespace Truffles
         private void PlotTraps()
         {
             foreach ((int, int) trap in trapLocations)
-        {
+            {
                 AddLabel(trap, Color.LightGoldenrodYellow);
             }
         }
@@ -126,7 +134,7 @@ namespace Truffles
             Label addedLabel = new Label();
             addedLabel.AutoSize = false;
             addedLabel.Size = new Size(cellSize, cellSize);
-            addedLabel.Name = "lable1";
+            addedLabel.Name = "label1";
             addedLabel.Text = "F";
             addedLabel.TextAlign = ContentAlignment.MiddleCenter;
             addedLabel.BackColor = Color.LightBlue;
@@ -139,6 +147,17 @@ namespace Truffles
             Label addedLabel = new Label();
             addedLabel.AutoSize = false;
             addedLabel.Size = new Size(cellSize, cellSize);
+            addedLabel.BackColor = color;
+            addedLabel.Location = new Point(location.col * cellSize, location.row * cellSize);
+            addedLabel.Parent = gameSpace;
+        }
+
+        private void AddLabel((int col, int row) location, Color color, String labelText)
+        {
+            Label addedLabel = new Label();
+            addedLabel.AutoSize = false;
+            addedLabel.Size = new Size(cellSize, cellSize);
+            addedLabel.Name = labelText;
             addedLabel.BackColor = color;
             addedLabel.Location = new Point(location.col * cellSize, location.row * cellSize);
             addedLabel.Parent = gameSpace;
@@ -159,6 +178,48 @@ namespace Truffles
             gameSpace.Location = new Point(xSpaceShift - 50, ySpaceShift - 100);
 
             Controls.Add(gameSpace);
+        }
+
+        private void btnLeftClick(object sender, EventArgs e)
+        {
+            if (playerLocation.col > 0)
+            {
+                playerLocation.col--;
+                Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
+                lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
+            }
+
+        }
+
+        private void btnUpClick(object sender, EventArgs e)
+        {
+            if (playerLocation.row > 0)
+            {
+                playerLocation.row--;
+                Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
+                lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
+            }
+
+        }
+
+        private void btnRightClick(object sender, EventArgs e)
+        {
+            if (playerLocation.col < numCols - 1)
+            {
+                playerLocation.col++;
+                Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
+                lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
+            }
+        }
+
+        private void btnDownClick(object sender, EventArgs e)
+        {
+            if (playerLocation.row < numRows - 1)
+            {
+                playerLocation.row++;
+                Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
+                lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
+            }
         }
     }
 }
