@@ -32,6 +32,10 @@
             btnRight = new Button();
             btnDown = new Button();
             btnLeft = new Button();
+            lblRisk = new Label();
+            lblScore = new Label();
+            lblRiskTitle = new Label();
+            lblScoreTitle = new Label();
             SuspendLayout();
             // 
             // btnUp
@@ -78,11 +82,55 @@
             btnLeft.UseVisualStyleBackColor = true;
             btnLeft.Click += btnLeftClick;
             // 
+            // lblRisk
+            // 
+            lblRisk.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+            lblRisk.Location = new Point(111, 338);
+            lblRisk.Name = "lblRisk";
+            lblRisk.Size = new Size(65, 37);
+            lblRisk.TabIndex = 4;
+            lblRisk.Text = "0";
+            lblRisk.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lblScore
+            // 
+            lblScore.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+            lblScore.Location = new Point(111, 418);
+            lblScore.Name = "lblScore";
+            lblScore.Size = new Size(103, 37);
+            lblScore.TabIndex = 5;
+            lblScore.Text = "0";
+            lblScore.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lblRiskTitle
+            // 
+            lblRiskTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point);
+            lblRiskTitle.Location = new Point(31, 338);
+            lblRiskTitle.Name = "lblRiskTitle";
+            lblRiskTitle.Size = new Size(86, 37);
+            lblRiskTitle.TabIndex = 6;
+            lblRiskTitle.Text = "Risk:";
+            lblRiskTitle.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // lblScoreTitle
+            // 
+            lblScoreTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point);
+            lblScoreTitle.Location = new Point(22, 418);
+            lblScoreTitle.Name = "lblScoreTitle";
+            lblScoreTitle.Size = new Size(95, 37);
+            lblScoreTitle.TabIndex = 7;
+            lblScoreTitle.Text = "Score:";
+            lblScoreTitle.TextAlign = ContentAlignment.MiddleRight;
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1092, 665);
+            Controls.Add(lblScoreTitle);
+            Controls.Add(lblRiskTitle);
+            Controls.Add(lblScore);
+            Controls.Add(lblRisk);
             Controls.Add(btnLeft);
             Controls.Add(btnDown);
             Controls.Add(btnRight);
@@ -99,5 +147,9 @@
         private Button btnRight;
         private Button btnDown;
         private Button btnLeft;
+        private Label lblRisk;
+        private Label lblScore;
+        private Label lblRiskTitle;
+        private Label lblScoreTitle;
     }
 }
