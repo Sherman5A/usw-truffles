@@ -49,7 +49,7 @@ namespace Truffles
             PlayerOnTop();
         }
 
-        private void countTraps()
+        private void CountTraps()
         {
             // TODO: rewrite this with a matrix
             int count = 0;
@@ -109,7 +109,7 @@ namespace Truffles
         }
 
         // TODO: Use AddLabel instead
-        private void addTrail((int col, int row) location)
+        private void AddTrail((int col, int row) location)
         {
             Label addLabel = new Label();
             addLabel.AutoSize = false;
@@ -276,100 +276,100 @@ namespace Truffles
         }
 
         // TODO: Reduce to smaller functions
-        private void btnLeftClick(object sender, EventArgs e)
+        private void BtnLeftClick(object sender, EventArgs e)
         {
             if (playerLocation.col > 0)
             {
-                addTrail(playerLocation);
+                AddTrail(playerLocation);
                 playerLocation.col--;
                 Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
                 lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                countTraps();
+                CountTraps();
 
                 if (trapLocations.Contains(playerLocation))
                 {
-                    playerOnTrap();
+                    PlayerOnTrap();
                 }
 
                 if (truffleLocations.Contains(playerLocation))
                 {
-                    playerOnTruffle();
+                    PlayerOnTruffle();
                 }
             }
 
         }
 
-        private void btnUpClick(object sender, EventArgs e)
+        private void BtnUpClick(object sender, EventArgs e)
         {
             if (playerLocation.row > 0)
             {
-                addTrail(playerLocation);
+                AddTrail(playerLocation);
                 playerLocation.row--;
                 Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
                 lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                countTraps();
+                CountTraps();
 
                 if (trapLocations.Contains(playerLocation))
                 {
-                    playerOnTrap();
+                    PlayerOnTrap();
 
                 }
 
                 if (truffleLocations.Contains(playerLocation))
                 {
-                    playerOnTruffle();
+                    PlayerOnTruffle();
                 }
             }
 
         }
 
-        private void btnRightClick(object sender, EventArgs e)
+        private void BtnRightClick(object sender, EventArgs e)
         {
             if (playerLocation.col < numCols - 1)
             {
-                addTrail(playerLocation);
+                AddTrail(playerLocation);
                 playerLocation.col++;
                 Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
                 lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                countTraps();
+                CountTraps();
 
                 if (trapLocations.Contains(playerLocation))
                 {
-                    playerOnTrap();
+                    PlayerOnTrap();
                 }
 
                 if (truffleLocations.Contains(playerLocation))
                 {
-                    playerOnTruffle();
+                    PlayerOnTruffle();
                 }
             }
         }
 
-        private void btnDownClick(object sender, EventArgs e)
+        private void BtnDownClick(object sender, EventArgs e)
         {
             if (playerLocation.row < numRows - 1)
             {
-                addTrail(playerLocation);
+                AddTrail(playerLocation);
                 playerLocation.row++;
                 Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
                 lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                countTraps();
+                CountTraps();
 
                 // TODO: Use else if or switch of sort
                 if (trapLocations.Contains(playerLocation))
                 {
-                    playerOnTrap();
+                    PlayerOnTrap();
 
                 }
 
                 if (truffleLocations.Contains(playerLocation))
                 {
-                    playerOnTruffle();
+                    PlayerOnTruffle();
                 }
             }
         }
 
-        private void playerOnTrap()
+        private void PlayerOnTrap()
         {
             PlotTraps();
             MessageBox.Show("You died");
@@ -379,17 +379,17 @@ namespace Truffles
             btnUp.Enabled = false;
         }
 
-        private void playerOnTruffle()
+        private void PlayerOnTruffle()
         {
             score += 10;
             lblScore.Text = score.ToString();
             Debug.WriteLine(score.ToString());
             truffleLocations.Remove(playerLocation);
-            removeLabel(playerLocation);
+            RemoveLabel(playerLocation);
 
         }
 
-        private void removeLabel((int col, int row) playerLocation)
+        private void RemoveLabel((int col, int row) playerLocation)
         {
             // TODO: replace with string formatting
             gameSpace.Controls.Remove(gameSpace.Controls.Find(

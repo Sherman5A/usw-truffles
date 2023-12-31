@@ -47,7 +47,7 @@
             btnUp.TabIndex = 0;
             btnUp.Text = "Up";
             btnUp.UseVisualStyleBackColor = true;
-            btnUp.Click += btnUpClick;
+            btnUp.Click += BtnUpClick;
             // 
             // btnRight
             // 
@@ -58,7 +58,7 @@
             btnRight.TabIndex = 1;
             btnRight.Text = "Right";
             btnRight.UseVisualStyleBackColor = true;
-            btnRight.Click += btnRightClick;
+            btnRight.Click += BtnRightClick;
             // 
             // btnDown
             // 
@@ -69,7 +69,7 @@
             btnDown.TabIndex = 2;
             btnDown.Text = "Down";
             btnDown.UseVisualStyleBackColor = true;
-            btnDown.Click += btnDownClick;
+            btnDown.Click += BtnDownClick;
             // 
             // btnLeft
             // 
@@ -80,7 +80,7 @@
             btnLeft.TabIndex = 3;
             btnLeft.Text = "Left";
             btnLeft.UseVisualStyleBackColor = true;
-            btnLeft.Click += btnLeftClick;
+            btnLeft.Click += BtnLeftClick;
             // 
             // lblRisk
             // 
