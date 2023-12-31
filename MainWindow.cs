@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Runtime.Versioning;
 
 namespace Truffles
 {
@@ -45,16 +44,14 @@ namespace Truffles
             PlotFood();
 
             AddTraps(numTraps);
-            PlotTraps();
 
             AddPlayer();
             PlayerOnTop();
-            lblRisk.Text = countTraps();
         }
-        private string countTraps()
+
+        private void countTraps()
         {
             // TODO: rewrite this with a matrix
-
             int count = 0;
 
             if (playerLocation.col > 0)
@@ -62,7 +59,7 @@ namespace Truffles
                 (int, int) adjacentTile = (playerLocation.col - 1, playerLocation.row);
                 if (trapLocations.Contains(adjacentTile))
                 {
-                    count++;
+                    count++; 
                 }
             }
 
@@ -92,7 +89,23 @@ namespace Truffles
                     count++;
                 }
             }
-            return count.ToString();
+            lblRisk.Text = count.ToString();
+            // Place this into seperate function
+            switch (count)
+            {
+                case 0:
+                    lblRisk.BackColor = Color.White;
+                    break;
+                case 1:
+                    lblRisk.BackColor = Color.Yellow;
+                    break;
+                case 2:
+                    lblRisk.BackColor = Color.Orange;
+                    break;
+                case 3:
+                    lblRisk.BackColor = Color.Red;
+                    break;
+            }
         }
 
         // TODO: Use AddLabel instead
@@ -108,7 +121,7 @@ namespace Truffles
 
         private void PlayerOnTop()
         {
-            Label lblPiggy = this.Controls.Find("lblPLayer", true).FirstOrDefault() as Label;
+            Label lblPiggy = this.Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
             lblPiggy.BringToFront();
         }
 
@@ -128,7 +141,7 @@ namespace Truffles
                     !truffleLocations.Contains(locationAttempt))
                 {
                     playerLocation = locationAttempt;
-                    AddLabel(locationAttempt, Color.Magenta, "lblPlayer");
+                    AddLabel(locationAttempt, Color.Magenta, "player");
                     break;
                 }
             }
@@ -138,7 +151,7 @@ namespace Truffles
         {
             foreach ((int, int) trap in trapLocations)
             {
-                AddLabel(trap, Color.LightGoldenrodYellow);
+                AddLabel(trap, Color.LightGoldenrodYellow, "trap");
             }
         }
 
@@ -164,14 +177,9 @@ namespace Truffles
 
         private void PlotFood()
         {
-            string name;
-            int i = 0;
-
             foreach ((int col, int row) truffle in truffleLocations)
             {
-                // TODO: string formatting
-                name = "lblTruffle" + truffle.col.ToString() + truffle.row.ToString();
-                AddLabel(truffle, Color.DarkRed, name);
+                AddLabel(truffle, Color.DarkRed, "food");
             }
         }
 
@@ -220,13 +228,34 @@ namespace Truffles
 
         private void AddLabel((int col, int row) location, Color color, String labelText)
         {
+            // Turn into constructor function, this will allow for code reuse in future with label and label images
             Label addedLabel = new Label();
             addedLabel.AutoSize = false;
             addedLabel.Size = new Size(cellSize, cellSize);
             addedLabel.Name = labelText;
-            addedLabel.BackColor = color;
+            // addedLabel.BackColor = color;
             addedLabel.Location = new Point(location.col * cellSize, location.row * cellSize);
             addedLabel.Parent = gameSpace;
+
+            if (labelText == "player")
+            {
+                addedLabel.Name = "lblPlayer";
+                addedLabel.BackColor = Color.Green;
+                addedLabel.Image = new Bitmap(Properties.Resources.playerIcon, addedLabel.Size);
+                 
+            } else if (labelText == "food")
+            {
+                // Convert to string formatting
+                addedLabel.Name = "lblTruffle" + location.col.ToString() + location.row.ToString();
+                addedLabel.BackColor = Color.DarkRed;
+                // "food"
+                addedLabel.Image = new Bitmap(Properties.Resources.foodIcon, addedLabel.Size);
+            } else if (labelText == "trap")
+            {
+                addedLabel.Name = "lblTrap";
+                addedLabel.BackColor = Color.LightGoldenrodYellow;
+                addedLabel.Image = new Bitmap(Properties.Resources.bombIcon, addedLabel.Size);
+            }
         }
 
         private void SetupMainWindow()
@@ -255,7 +284,7 @@ namespace Truffles
                 playerLocation.col--;
                 Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
                 lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                lblRisk.Text = countTraps();
+                countTraps();
 
                 if (trapLocations.Contains(playerLocation))
                 {
@@ -278,7 +307,7 @@ namespace Truffles
                 playerLocation.row--;
                 Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
                 lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                lblRisk.Text = countTraps();
+                countTraps();
 
                 if (trapLocations.Contains(playerLocation))
                 {
@@ -302,7 +331,7 @@ namespace Truffles
                 playerLocation.col++;
                 Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
                 lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                lblRisk.Text = countTraps();
+                countTraps();
 
                 if (trapLocations.Contains(playerLocation))
                 {
@@ -316,8 +345,6 @@ namespace Truffles
             }
         }
 
-
-
         private void btnDownClick(object sender, EventArgs e)
         {
             if (playerLocation.row < numRows - 1)
@@ -326,7 +353,7 @@ namespace Truffles
                 playerLocation.row++;
                 Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
                 lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                lblRisk.Text = countTraps();
+                countTraps();
 
                 // TODO: Use else if or switch of sort
                 if (trapLocations.Contains(playerLocation))
@@ -344,10 +371,11 @@ namespace Truffles
 
         private void playerOnTrap()
         {
+            PlotTraps();
             MessageBox.Show("You died");
             btnDown.Enabled = false;
             btnRight.Enabled = false;
-            btnLeft.Enabled = false;    
+            btnLeft.Enabled = false;
             btnUp.Enabled = false;
         }
 
@@ -365,7 +393,7 @@ namespace Truffles
         {
             // TODO: replace with string formatting
             gameSpace.Controls.Remove(gameSpace.Controls.Find(
-                "lblTruffle" + playerLocation.col.ToString() + playerLocation.row.ToString(),true)[0]
+                "lblTruffle" + playerLocation.col.ToString() + playerLocation.row.ToString(), true)[0]
             );
 
         }

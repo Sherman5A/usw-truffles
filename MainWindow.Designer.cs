@@ -135,6 +135,7 @@
             Controls.Add(btnDown);
             Controls.Add(btnRight);
             Controls.Add(btnUp);
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             Name = "MainWindow";
             Text = "Truffles";
             Load += MainWindowLoad;
