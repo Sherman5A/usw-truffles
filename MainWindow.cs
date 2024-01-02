@@ -59,7 +59,7 @@ namespace Truffles
                 (int, int) adjacentTile = (playerLocation.col - 1, playerLocation.row);
                 if (trapLocations.Contains(adjacentTile))
                 {
-                    count++; 
+                    count++;
                 }
             }
 
@@ -243,14 +243,16 @@ namespace Truffles
                 addedLabel.BackColor = Color.Green;
                 addedLabel.Image = new Bitmap(Properties.Resources.playerIcon, addedLabel.Size);
                  
-            } else if (labelText == "food")
+            }
+            else if (labelText == "food")
             {
                 // Convert to string formatting
                 addedLabel.Name = "lblTruffle" + location.col.ToString() + location.row.ToString();
                 addedLabel.BackColor = Color.DarkRed;
                 // "food"
                 addedLabel.Image = new Bitmap(Properties.Resources.foodIcon, addedLabel.Size);
-            } else if (labelText == "trap")
+            }
+            else if (labelText == "trap")
             {
                 addedLabel.Name = "lblTrap";
                 addedLabel.BackColor = Color.LightGoldenrodYellow;
@@ -275,7 +277,48 @@ namespace Truffles
             Controls.Add(gameSpace);
         }
 
+
+        private void MovementButtonClicked(object sender, EventArgs e, string direction)
+        {
+            Dictionary<string, (int, int)> movementOperations = new Dictionary<string, (int, int)>()
+            {
+                { "left", ( -1, 0)},
+                { "right", ( 1, 0)},
+                { "up",  (0, 1)},
+                { "down", (0, -1)},
+            };
+            System.Console.WriteLine(movementOperations[direction]);
+
+            Tuple<int, int> testTuple = new Tuple<int, int>(0, 0);
+
+        }
+
         // TODO: Reduce to smaller functions
+        private void PlayerMove(object sender, EventArgs e, Tuple<string, int> direction)
+        {
+            if (0 < playerLocation.col && playerLocation.col <= numCols && 0 < playerLocation.row && playerLocation.row <= numRows)
+            {
+                // Lambda functions perform the maths on the rows
+                Dictionary<string, Action> movementOperations = new Dictionary<string, Action>()
+                 {
+                    {"left", () => playerLocation.col--},
+                    {"up", () => playerLocation.row--},
+                    {"right", () => playerLocation.col++},
+                    {"down", () => playerLocation.row++},
+                 };
+
+
+                // Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
+                // lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
+                // break;
+            }
+        }
+
+        private void CollisionCheck()
+        {
+
+        }
+
         private void BtnLeftClick(object sender, EventArgs e)
         {
             if (playerLocation.col > 0)
