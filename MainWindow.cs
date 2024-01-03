@@ -4,34 +4,38 @@ namespace Truffles
 {
     public partial class MainWindow : Form
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
 
-        // Globals
+        (int col, int row) playerLocation;
+        List<(int, int)> foodLocations;
+        List<(int, int)> trapLocations;
+        public Panel gameSpace;
+
+        // Gamemap Variables
         int cellSize = 64;
         int numRows = 17;
         int numCols = 13;
 
+        // Control area
         // Extra space x
         int xSpaceShift = 400;
         // Extra space y
         int ySpaceShift = 200;
 
-        List<(int, int)> foodLocations = new();
-        List<(int, int)> trapLocations = new();
-
         // Number of squares containing truffles
         int numTruffles = 10;
         // Number of squares containing traps
         int numTraps = 8;
-
-        (int col, int row) playerLocation;
-
-
+        // Default score
         int score = 0;
-        public Panel gameSpace = new Panel();
+
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            foodLocations = new();
+            trapLocations = new();
+            gameSpace = new Panel();
+        }
 
         private void MainWindowLoad(object sender, EventArgs e)
         {
@@ -216,7 +220,6 @@ namespace Truffles
 
             Controls.Add(gameSpace);
         }
-
 
         private void MovementButtonClicked(object sender, EventArgs e)
         {

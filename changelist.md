@@ -6,4 +6,4 @@
 - Movement button functions rewrote to use a single function with arguments
 - Risk checks for nearby tiles in diagonal directions now
 - Risk method rewrote to use a list of relative coordinates
-- 
+- Reorganise constructor and class properties
