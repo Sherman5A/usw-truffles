@@ -33,8 +33,6 @@ namespace Truffles
         int score = 0;
         public Panel gameSpace = new Panel();
 
-
-
         private void MainWindowLoad(object sender, EventArgs e)
         {
             SetupMainWindow();
@@ -48,65 +46,6 @@ namespace Truffles
 
             AddPlayer();
             PlayerOnTop();
-        }
-
-        private void CountTraps()
-        {
-            // TODO: rewrite this with a matrix
-            int count = 0;
-
-            if (playerLocation.col > 0)
-            {
-                (int, int) adjacentTile = (playerLocation.col - 1, playerLocation.row);
-                if (trapLocations.Contains(adjacentTile))
-                {
-                    count++;
-                }
-            }
-
-            if (playerLocation.col < numCols - 1)
-            {
-                (int, int) adjacentTile = (playerLocation.col + 1, playerLocation.row);
-                if (trapLocations.Contains(adjacentTile))
-                {
-                    count++;
-                }
-            }
-
-            if (playerLocation.row > 0)
-            {
-                (int, int) adjacentTile = (playerLocation.col, playerLocation.row - 1);
-                if (trapLocations.Contains(adjacentTile))
-                {
-                    count++;
-                }
-            }
-
-            if (playerLocation.row < numCols - 1)
-            {
-                (int, int) adjacentTile = (playerLocation.col, playerLocation.row + 1);
-                if (trapLocations.Contains(adjacentTile))
-                {
-                    count++;
-                }
-            }
-            lblRisk.Text = count.ToString();
-            // Place this into seperate function
-            switch (count)
-            {
-                case 0:
-                    lblRisk.BackColor = Color.White;
-                    break;
-                case 1:
-                    lblRisk.BackColor = Color.Yellow;
-                    break;
-                case 2:
-                    lblRisk.BackColor = Color.Orange;
-                    break;
-                case 3:
-                    lblRisk.BackColor = Color.Red;
-                    break;
-            }
         }
 
         // TODO: Use AddLabel instead
@@ -317,6 +256,7 @@ namespace Truffles
 
             Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
             lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
+            AddTrail(playerLocation);
             CollisionCheck();
         }
 
@@ -332,75 +272,14 @@ namespace Truffles
             {
                 PlayerOnFood();
             }
-
-            CountAdjacentTraps();
-
+            ChangeRiskLabel(CountNearbyTraps());
         }
 
-        // TODO: Reduce to smaller functions
-        private void PlayerMove(object sender, EventArgs e, Tuple<string, int> direction)
+        private void ChangeRiskLabel(int nearTraps)
         {
-            if (0 < playerLocation.col && playerLocation.col <= numCols && 0 < playerLocation.row && playerLocation.row <= numRows)
-            {
-                // Lambda functions perform the maths on the rows
-                Dictionary<string, Action> movementOperations = new Dictionary<string, Action>()
-                 {
-                    {"left", () => playerLocation.col--},
-                    {"up", () => playerLocation.row--},
-                    {"right", () => playerLocation.col++},
-                    {"down", () => playerLocation.row++},
-                 };
-
-
-                // Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
-                // lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                // break;
-            }
-        }
-
-        private void CountAdjacentTraps()
-        {
-            // TODO: rewrite this with a matrix
-            int count = 0;
-
-            if (playerLocation.col > 0)
-            {
-                (int, int) adjacentTile = (playerLocation.col - 1, playerLocation.row);
-                if (trapLocations.Contains(adjacentTile))
-                {
-                    count++;
-                }
-            }
-
-            if (playerLocation.col < numCols - 1)
-            {
-                (int, int) adjacentTile = (playerLocation.col + 1, playerLocation.row);
-                if (trapLocations.Contains(adjacentTile))
-                {
-                    count++;
-                }
-            }
-
-            if (playerLocation.row > 0)
-            {
-                (int, int) adjacentTile = (playerLocation.col, playerLocation.row - 1);
-                if (trapLocations.Contains(adjacentTile))
-                {
-                    count++;
-                }
-            }
-
-            if (playerLocation.row < numCols - 1)
-            {
-                (int, int) adjacentTile = (playerLocation.col, playerLocation.row + 1);
-                if (trapLocations.Contains(adjacentTile))
-                {
-                    count++;
-                }
-            }
-            lblRisk.Text = count.ToString();
+            lblRisk.Text = nearTraps.ToString();
             // Place this into seperate function
-            switch (count)
+            switch (nearTraps)
             {
                 case 0:
                     lblRisk.BackColor = Color.White;
@@ -417,98 +296,25 @@ namespace Truffles
             }
         }
 
-
-        private void BtnLeftClick(object sender, EventArgs e)
+        private int CountNearbyTraps()
         {
-            if (playerLocation.col > 0)
+            // List of the relative vectors potential neigbours 
+            List<(int col, int row)> neigbourVectors = new List<(int col, int row)> {
+                (-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)
+            };
+
+            int nearTraps = 0;
+
+            foreach (var directionVector in neigbourVectors)
             {
-                AddTrail(playerLocation);
-                playerLocation.col--;
-                Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
-                lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                CountAdjacentTraps();
-
-                if (trapLocations.Contains(playerLocation))
+                (int col, int row) checkLocation = (playerLocation.col + directionVector.col, playerLocation.row + directionVector.row);
+                if (trapLocations.Contains(checkLocation))
                 {
-                    PlayerOnTrap();
-                }
-
-                if (foodLocations.Contains(playerLocation))
-                {
-                    PlayerOnFood();
+                    nearTraps++;
                 }
             }
-
-        }
-
-        private void BtnUpClick(object sender, EventArgs e)
-        {
-            if (playerLocation.row > 0)
-            {
-                AddTrail(playerLocation);
-                playerLocation.row--;
-                Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
-                lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                CountAdjacentTraps();
-
-                if (trapLocations.Contains(playerLocation))
-                {
-                    PlayerOnTrap();
-
-                }
-
-                if (foodLocations.Contains(playerLocation))
-                {
-                    PlayerOnFood();
-                }
-            }
-
-        }
-
-        private void BtnRightClick(object sender, EventArgs e)
-        {
-            if (playerLocation.col < numCols - 1)
-            {
-                AddTrail(playerLocation);
-                playerLocation.col++;
-                Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
-                lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                CountAdjacentTraps();
-
-                if (trapLocations.Contains(playerLocation))
-                {
-                    PlayerOnTrap();
-                }
-
-                if (foodLocations.Contains(playerLocation))
-                {
-                    PlayerOnFood();
-                }
-            }
-        }
-
-        private void BtnDownClick(object sender, EventArgs e)
-        {
-            if (playerLocation.row < numRows - 1)
-            {
-                AddTrail(playerLocation);
-                playerLocation.row++;
-                Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
-                lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                CountAdjacentTraps();
-
-                // TODO: Use else if or switch of sort
-                if (trapLocations.Contains(playerLocation))
-                {
-                    PlayerOnTrap();
-
-                }
-
-                if (foodLocations.Contains(playerLocation))
-                {
-                    PlayerOnFood();
-                }
-            }
+            return nearTraps;
+            // TODO: Add an update count function after this
         }
 
         private void PlayerOnTrap()
