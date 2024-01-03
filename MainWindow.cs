@@ -28,41 +28,12 @@ namespace Truffles
         // Default score
         int score = 0;
 
-
         public MainWindow()
         {
             InitializeComponent();
             foodLocations = new();
             trapLocations = new();
             gameSpace = new Panel();
-        }
-
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            switch (keyData)
-            {
-                // Movement keys
-                case Keys.Up:
-                case Keys.W:
-                    PlayerMove((0, -1));
-                    break;
-                case Keys.Down:
-                case Keys.S:
-                    PlayerMove((0, 1));
-                    break;
-                case Keys.Left:
-                case Keys.A:
-                    PlayerMove((-1, 0));
-                    break;
-                case Keys.Right:
-                case Keys.D:
-                    PlayerMove((1, 0));
-                    break;
-                default:
-                    return base.ProcessCmdKey(ref msg, keyData);
-
-            }
-            return true;
         }
 
         private void MainWindowLoad(object sender, EventArgs e)
@@ -375,6 +346,34 @@ namespace Truffles
                 "lblTruffle" + playerLocation.col.ToString() + playerLocation.row.ToString(), true)[0]
             );
 
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                // Movement keys
+                case Keys.Up:
+                case Keys.W:
+                    PlayerMove((0, -1));
+                    break;
+                case Keys.Down:
+                case Keys.S:
+                    PlayerMove((0, 1));
+                    break;
+                case Keys.Left:
+                case Keys.A:
+                    PlayerMove((-1, 0));
+                    break;
+                case Keys.Right:
+                case Keys.D:
+                    PlayerMove((1, 0));
+                    break;
+                default:
+                    return base.ProcessCmdKey(ref msg, keyData);
+
+            }
+            return true;
         }
     }
 }

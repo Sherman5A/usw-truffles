@@ -10,3 +10,4 @@
 - Add keybindings for movement
 	- Arrows keys
 	- WASD keys
+- Added a menu form
