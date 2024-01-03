@@ -7,3 +7,6 @@
 - Risk checks for nearby tiles in diagonal directions now
 - Risk method rewrote to use a list of relative coordinates
 - Reorganise constructor and class properties
+- Add keybindings for movement
+	- Arrows keys
+	- WASD keys

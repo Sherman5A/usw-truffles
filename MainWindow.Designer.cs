@@ -45,8 +45,8 @@
             btnUp.Name = "btnUp";
             btnUp.Size = new Size(50, 50);
             btnUp.TabIndex = 0;
-            btnUp.Text = "Up";
             btnUp.Tag = "up";
+            btnUp.Text = "Up";
             btnUp.UseVisualStyleBackColor = true;
             btnUp.Click += MovementButtonClicked;
             // 
@@ -57,11 +57,10 @@
             btnRight.Name = "btnRight";
             btnRight.Size = new Size(50, 50);
             btnRight.TabIndex = 1;
-            btnRight.Text = "Right";
             btnRight.Tag = "right";
+            btnRight.Text = "Right";
             btnRight.UseVisualStyleBackColor = true;
             btnRight.Click += MovementButtonClicked;
-
             // 
             // btnDown
             // 
@@ -70,8 +69,8 @@
             btnDown.Name = "btnDown";
             btnDown.Size = new Size(50, 50);
             btnDown.TabIndex = 2;
-            btnDown.Text = "Down";
             btnDown.Tag = "down";
+            btnDown.Text = "Down";
             btnDown.UseVisualStyleBackColor = true;
             btnDown.Click += MovementButtonClicked;
             // 
@@ -82,8 +81,8 @@
             btnLeft.Name = "btnLeft";
             btnLeft.Size = new Size(50, 50);
             btnLeft.TabIndex = 3;
-            btnLeft.Text = "Left";
             btnLeft.Tag = "left";
+            btnLeft.Text = "Left";
             btnLeft.UseVisualStyleBackColor = true;
             btnLeft.Click += MovementButtonClicked;
             // 
