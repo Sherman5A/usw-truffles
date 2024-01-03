@@ -19,7 +19,7 @@ namespace Truffles
         // Extra space y
         int ySpaceShift = 200;
 
-        List<(int, int)> truffleLocations = new();
+        List<(int, int)> foodLocations = new();
         List<(int, int)> trapLocations = new();
 
         // Number of squares containing truffles
@@ -44,6 +44,7 @@ namespace Truffles
             PlotFood();
 
             AddTraps(numTraps);
+            PlotTraps();
 
             AddPlayer();
             PlayerOnTop();
@@ -138,7 +139,7 @@ namespace Truffles
                 (int, int) locationAttempt = (playerColumn, playerRow);
 
                 if (!trapLocations.Contains(locationAttempt) &&
-                    !truffleLocations.Contains(locationAttempt))
+                    !foodLocations.Contains(locationAttempt))
                 {
                     playerLocation = locationAttempt;
                     AddLabel(locationAttempt, Color.Magenta, "player");
@@ -167,7 +168,7 @@ namespace Truffles
                 (int, int) trapLocation = (trapColumn, trapRow);
 
                 if (!trapLocations.Contains(trapLocation) &&
-                    !truffleLocations.Contains(trapLocation))
+                    !foodLocations.Contains(trapLocation))
                 {
                     trapLocations.Add(trapLocation);
                     found++;
@@ -177,7 +178,7 @@ namespace Truffles
 
         private void PlotFood()
         {
-            foreach ((int col, int row) truffle in truffleLocations)
+            foreach ((int col, int row) truffle in foodLocations)
             {
                 AddLabel(truffle, Color.DarkRed, "food");
             }
@@ -194,9 +195,9 @@ namespace Truffles
                 int truffleCol = rnd.Next(numCols);
                 (int, int) truffleLocation = (truffleCol, truffleRow);
 
-                if (!truffleLocations.Contains(truffleLocation))
+                if (!foodLocations.Contains(truffleLocation))
                 {
-                    truffleLocations.Add(truffleLocation);
+                    foodLocations.Add(truffleLocation);
                     found++;
                 }
 
@@ -242,7 +243,7 @@ namespace Truffles
                 addedLabel.Name = "lblPlayer";
                 addedLabel.BackColor = Color.Green;
                 addedLabel.Image = new Bitmap(Properties.Resources.playerIcon, addedLabel.Size);
-                 
+
             }
             else if (labelText == "food")
             {
@@ -278,18 +279,61 @@ namespace Truffles
         }
 
 
-        private void MovementButtonClicked(object sender, EventArgs e, string direction)
+        private void MovementButtonClicked(object sender, EventArgs e)
         {
-            Dictionary<string, (int, int)> movementOperations = new Dictionary<string, (int, int)>()
+
+            Button buttonPressed = sender as Button;
+            if (buttonPressed.Tag is null)
+            {
+                throw new InvalidOperationException("Expected button sender to have a tag denoting button direction");
+            }
+            string buttonDirection = (string)buttonPressed.Tag;
+
+            Dictionary<string, (int col, int row)> movementVector = new()
             {
                 { "left", ( -1, 0)},
                 { "right", ( 1, 0)},
-                { "up",  (0, 1)},
-                { "down", (0, -1)},
+                { "up",  (0, -1)},
+                { "down", (0, 1)},
             };
-            System.Console.WriteLine(movementOperations[direction]);
 
-            Tuple<int, int> testTuple = new Tuple<int, int>(0, 0);
+            PlayerMove(movementVector[buttonDirection]);
+            //Debug.WriteLine(resultTuple);
+
+        }
+
+        private static int Clamp(int val, int min, int max)
+        {
+            if (val <= min) return min;
+            if (val > max) return max;
+            return val;
+        }
+
+        private void PlayerMove((int col, int row) movementVector)
+        {
+
+            playerLocation.col = Clamp(playerLocation.col + movementVector.col, 0, numCols - 1);
+            playerLocation.row = Clamp(playerLocation.row + movementVector.row, 0, numRows - 1);
+
+            Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
+            lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
+            CollisionCheck();
+        }
+
+        private void CollisionCheck()
+        {
+            if (trapLocations.Contains(playerLocation))
+            {
+                PlayerOnTrap();
+                return;
+            }
+
+            if (foodLocations.Contains(playerLocation))
+            {
+                PlayerOnFood();
+            }
+
+            CountAdjacentTraps();
 
         }
 
@@ -314,10 +358,65 @@ namespace Truffles
             }
         }
 
-        private void CollisionCheck()
+        private void CountAdjacentTraps()
         {
+            // TODO: rewrite this with a matrix
+            int count = 0;
 
+            if (playerLocation.col > 0)
+            {
+                (int, int) adjacentTile = (playerLocation.col - 1, playerLocation.row);
+                if (trapLocations.Contains(adjacentTile))
+                {
+                    count++;
+                }
+            }
+
+            if (playerLocation.col < numCols - 1)
+            {
+                (int, int) adjacentTile = (playerLocation.col + 1, playerLocation.row);
+                if (trapLocations.Contains(adjacentTile))
+                {
+                    count++;
+                }
+            }
+
+            if (playerLocation.row > 0)
+            {
+                (int, int) adjacentTile = (playerLocation.col, playerLocation.row - 1);
+                if (trapLocations.Contains(adjacentTile))
+                {
+                    count++;
+                }
+            }
+
+            if (playerLocation.row < numCols - 1)
+            {
+                (int, int) adjacentTile = (playerLocation.col, playerLocation.row + 1);
+                if (trapLocations.Contains(adjacentTile))
+                {
+                    count++;
+                }
+            }
+            lblRisk.Text = count.ToString();
+            // Place this into seperate function
+            switch (count)
+            {
+                case 0:
+                    lblRisk.BackColor = Color.White;
+                    break;
+                case 1:
+                    lblRisk.BackColor = Color.Yellow;
+                    break;
+                case 2:
+                    lblRisk.BackColor = Color.Orange;
+                    break;
+                case 3:
+                    lblRisk.BackColor = Color.Red;
+                    break;
+            }
         }
+
 
         private void BtnLeftClick(object sender, EventArgs e)
         {
@@ -327,16 +426,16 @@ namespace Truffles
                 playerLocation.col--;
                 Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
                 lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                CountTraps();
+                CountAdjacentTraps();
 
                 if (trapLocations.Contains(playerLocation))
                 {
                     PlayerOnTrap();
                 }
 
-                if (truffleLocations.Contains(playerLocation))
+                if (foodLocations.Contains(playerLocation))
                 {
-                    PlayerOnTruffle();
+                    PlayerOnFood();
                 }
             }
 
@@ -350,7 +449,7 @@ namespace Truffles
                 playerLocation.row--;
                 Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
                 lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                CountTraps();
+                CountAdjacentTraps();
 
                 if (trapLocations.Contains(playerLocation))
                 {
@@ -358,9 +457,9 @@ namespace Truffles
 
                 }
 
-                if (truffleLocations.Contains(playerLocation))
+                if (foodLocations.Contains(playerLocation))
                 {
-                    PlayerOnTruffle();
+                    PlayerOnFood();
                 }
             }
 
@@ -374,16 +473,16 @@ namespace Truffles
                 playerLocation.col++;
                 Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
                 lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                CountTraps();
+                CountAdjacentTraps();
 
                 if (trapLocations.Contains(playerLocation))
                 {
                     PlayerOnTrap();
                 }
 
-                if (truffleLocations.Contains(playerLocation))
+                if (foodLocations.Contains(playerLocation))
                 {
-                    PlayerOnTruffle();
+                    PlayerOnFood();
                 }
             }
         }
@@ -396,7 +495,7 @@ namespace Truffles
                 playerLocation.row++;
                 Label lblPlayer = Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
                 lblPlayer.Location = new Point(playerLocation.col * cellSize, playerLocation.row * cellSize);
-                CountTraps();
+                CountAdjacentTraps();
 
                 // TODO: Use else if or switch of sort
                 if (trapLocations.Contains(playerLocation))
@@ -405,9 +504,9 @@ namespace Truffles
 
                 }
 
-                if (truffleLocations.Contains(playerLocation))
+                if (foodLocations.Contains(playerLocation))
                 {
-                    PlayerOnTruffle();
+                    PlayerOnFood();
                 }
             }
         }
@@ -422,12 +521,12 @@ namespace Truffles
             btnUp.Enabled = false;
         }
 
-        private void PlayerOnTruffle()
+        private void PlayerOnFood()
         {
             score += 10;
             lblScore.Text = score.ToString();
             Debug.WriteLine(score.ToString());
-            truffleLocations.Remove(playerLocation);
+            foodLocations.Remove(playerLocation);
             RemoveLabel(playerLocation);
 
         }
