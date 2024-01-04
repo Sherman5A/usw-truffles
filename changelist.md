@@ -11,3 +11,4 @@
 	- Arrows keys
 	- WASD keys
 - Added a menu form
+- Add event handling for closing the game and reopening the main menu.

@@ -6,7 +6,6 @@ namespace Truffles
     {
         MainWindow mainWindow;
 
-
         public Menu()
         {
             InitializeComponent();
@@ -19,18 +18,24 @@ namespace Truffles
 
         private void BtnQuitClicked(object sender, EventArgs e)
         {
-
+            if (mainWindow is not null)
+            {
+                mainWindow.Close();
+            }
+            Close();
         }
 
         private void BtnStartClicked(object sender, EventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
+            mainWindow = new MainWindow();
             mainWindow.Show();
+            mainWindow.QuitGameEvent += HandleGameQuitEvent;
             Hide();
         }
 
-        private void HandleGameLossEvent(object sender, EventArgs e)
+        private void HandleGameQuitEvent(object sender, QuitEventArgs e)
         {
+            Debug.WriteLine(e.PlayerScore);
             mainWindow.Close();
             Show();
         }
