@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace Truffles
 {
     public partial class MainWindow : Form
@@ -28,7 +26,6 @@ namespace Truffles
         // Default score
         int score = 0;
 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -37,32 +34,20 @@ namespace Truffles
             gameSpace = new Panel();
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            switch (keyData)
-            {
-                // Movement keys
-                case Keys.Up:
-                case Keys.W:
-                    PlayerMove((0, -1));
-                    break;
-                case Keys.Down:
-                case Keys.S:
-                    PlayerMove((0, 1));
-                    break;
-                case Keys.Left:
-                case Keys.A:
-                    PlayerMove((-1, 0));
-                    break;
-                case Keys.Right:
-                case Keys.D:
-                    PlayerMove((1, 0));
-                    break;
-                default:
-                    return base.ProcessCmdKey(ref msg, keyData);
+        public delegate void QuitEventHander(object sender, QuitEventArgs e);
+        public event QuitEventHander QuitGameEvent;
 
-            }
-            return true;
+        private void PlayerOnTrap()
+        {
+            btnDown.Enabled = btnRight.Enabled = btnLeft.Enabled = btnUp.Enabled = false;
+            PlotTraps();
+            MessageBox.Show("You died");
+
+            QuitEventArgs args = new QuitEventArgs()
+            {
+                PlayerScore = score,
+            };
+            QuitGameEvent(this, args);
         }
 
         private void MainWindowLoad(object sender, EventArgs e)
@@ -93,8 +78,8 @@ namespace Truffles
 
         private void PlayerOnTop()
         {
-            Label lblPiggy = this.Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
-            lblPiggy.BringToFront();
+            Label lblPlayer = this.Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
+            lblPlayer.BringToFront();
         }
 
         /// <summary>
@@ -171,7 +156,6 @@ namespace Truffles
                     foodLocations.Add(truffleLocation);
                     found++;
                 }
-
             }
         }
 
@@ -268,8 +252,6 @@ namespace Truffles
             };
 
             PlayerMove(movementVector[buttonDirection]);
-            //Debug.WriteLine(resultTuple);
-
         }
 
         private static int Clamp(int val, int min, int max)
@@ -348,21 +330,10 @@ namespace Truffles
             // TODO: Add an update count function after this
         }
 
-        private void PlayerOnTrap()
-        {
-            PlotTraps();
-            MessageBox.Show("You died");
-            btnDown.Enabled = false;
-            btnRight.Enabled = false;
-            btnLeft.Enabled = false;
-            btnUp.Enabled = false;
-        }
-
         private void PlayerOnFood()
         {
             score += 10;
             lblScore.Text = score.ToString();
-            Debug.WriteLine(score.ToString());
             foodLocations.Remove(playerLocation);
             RemoveLabel(playerLocation);
 
@@ -375,6 +346,35 @@ namespace Truffles
                 "lblTruffle" + playerLocation.col.ToString() + playerLocation.row.ToString(), true)[0]
             );
 
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                // Movement keys
+                case Keys.Up:
+                case Keys.W:
+                    // Parameter is the vector to move the player up by 1 cell
+                    PlayerMove((0, -1));
+                    break;
+                case Keys.Down:
+                case Keys.S:
+                    PlayerMove((0, 1));
+                    break;
+                case Keys.Left:
+                case Keys.A:
+                    PlayerMove((-1, 0));
+                    break;
+                case Keys.Right:
+                case Keys.D:
+                    PlayerMove((1, 0));
+                    break;
+                default:
+                    return base.ProcessCmdKey(ref msg, keyData);
+
+            }
+            return true;
         }
     }
 }
