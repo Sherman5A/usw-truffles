@@ -152,6 +152,7 @@
             btnRandomise.TabIndex = 10;
             btnRandomise.Text = "Randomise";
             btnRandomise.UseVisualStyleBackColor = true;
+            btnRandomise.Click += RandomiseClicked;
             // 
             // btnDefaultValues
             // 
@@ -173,7 +174,7 @@
             listScoreView.TabIndex = 12;
             listScoreView.UseCompatibleStateImageBehavior = false;
             listScoreView.View = View.Details;
-            listScoreView.ColumnClick += scoreColumnClick;
+            listScoreView.ColumnClick += ScoreColumnClick;
             // 
             // colScores
             // 

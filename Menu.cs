@@ -57,7 +57,7 @@ namespace Truffles
             listScoreView.Items.Add(e.PlayerScore.ToString());
         }
 
-        private void scoreColumnClick(object sender, ColumnClickEventArgs e)
+        private void ScoreColumnClick(object sender, ColumnClickEventArgs e)
         {
             if (listNumSort.OrderSort == SortOrder.Ascending)
             {
@@ -68,6 +68,26 @@ namespace Truffles
                 listNumSort.OrderSort = SortOrder.Ascending;
             }
             listScoreView.Sort();
+        }
+
+        private void RandomiseClicked(object sender, EventArgs e)
+        {
+            Random random = new Random();
+            // Randomise all values for generation
+
+            // Randomise grid size first to prevent having too many mines / traps
+            int randCols = random.Next(5, 30);
+            int randRows = random.Next(5, 30);
+
+            int totalCells = randRows * randCols;
+
+            int randFood = random.Next(1, totalCells / 6);
+            int randTraps = random.Next(1, (totalCells - randFood) / 6);
+
+            numCol.Value= randCols;
+            numRow.Value= randRows;
+            numFood.Value= randFood;
+            numTraps.Value= randTraps;
         }
     }
 }
