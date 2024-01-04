@@ -78,8 +78,8 @@ namespace Truffles
 
         private void PlayerOnTop()
         {
-            Label lblPiggy = this.Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
-            lblPiggy.BringToFront();
+            Label lblPlayer = this.Controls.Find("lblPlayer", true).FirstOrDefault() as Label;
+            lblPlayer.BringToFront();
         }
 
         /// <summary>
