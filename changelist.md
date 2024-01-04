@@ -11,4 +11,6 @@
 	- Arrows keys
 	- WASD keys
 - Added a menu form
-- Add event handling for closing the game and reopening the main menu.
+- Add event handling for closing the game and reopening the main menu
+- Add scoreboard through file IO operations
+- Add scoreboard sorting

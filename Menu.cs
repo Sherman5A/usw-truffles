@@ -1,19 +1,35 @@
-﻿using System.Diagnostics;
-
+﻿
 namespace Truffles
 {
     public partial class Menu : Form
     {
-        MainWindow mainWindow;
+        private string filePath = "scores.txt";
+        private MainWindow mainWindow;
+        private List<string> scores;
+        private ListViewNumberSort listNumSort;
 
         public Menu()
         {
             InitializeComponent();
+            listNumSort = new ListViewNumberSort()
+            {
+                OrderSort = SortOrder.Descending,
+                SortColumn = 0,
+            };
         }
 
         private void MenuLoad(object sender, EventArgs e)
         {
-            Debug.WriteLine(Application.OpenForms.ToString());
+            scores = File.ReadAllLines(filePath).ToList();
+            listScoreView.View = View.Details;
+            listScoreView.Sorting = SortOrder.Descending;
+            listScoreView.ListViewItemSorter = listNumSort;
+
+            scores.ForEach(s =>
+            {
+                listScoreView.Items.Add(s);
+            });
+            listScoreView.Sort();
         }
 
         private void BtnQuitClicked(object sender, EventArgs e)
@@ -35,9 +51,23 @@ namespace Truffles
 
         private void HandleGameQuitEvent(object sender, QuitEventArgs e)
         {
-            Debug.WriteLine(e.PlayerScore);
+            File.AppendAllText(filePath, e.PlayerScore + Environment.NewLine);
             mainWindow.Close();
             Show();
+            listScoreView.Items.Add(e.PlayerScore.ToString());
+        }
+
+        private void scoreColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (listNumSort.OrderSort == SortOrder.Ascending)
+            {
+                listNumSort.OrderSort = SortOrder.Descending;
+            }
+            else
+            {
+                listNumSort.OrderSort = SortOrder.Ascending;
+            }
+            listScoreView.Sort();
         }
     }
 }
