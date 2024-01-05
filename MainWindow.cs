@@ -1,3 +1,5 @@
+using System.Security;
+
 namespace USWGame
 {
     public partial class MainWindow : Form
@@ -21,6 +23,9 @@ namespace USWGame
         int xLeftMargin = 300;
         int xRightMargin = 100;
         int yMargin = 50;
+
+        // Accept control input
+        bool acceptControl = true;
 
         // Default score
         int score = 0;
@@ -51,6 +56,21 @@ namespace USWGame
 
         private void MainWindowLoad(object sender, EventArgs e)
         {
+            Bitmap btnRightImage = new Bitmap(Properties.Resources.arrow, btnRight.Size);
+            btnRight.Image = btnRightImage;
+
+            Bitmap btnDownImage = (Bitmap)btnRightImage.Clone();
+            btnDownImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            btnDown.Image = btnDownImage;
+
+            Bitmap btnLeftImage = (Bitmap)btnDownImage.Clone();
+            btnLeftImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            btnLeft.Image = btnLeftImage;
+
+            Bitmap btnUpImage = (Bitmap)btnLeftImage.Clone();
+            btnUpImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            btnUp.Image = btnUpImage;
+
             SetupMainWindow();
             SetupGameSpace();
 
@@ -238,6 +258,8 @@ namespace USWGame
         private async void PlayerOnTrap()
         {
             btnDown.Enabled = btnRight.Enabled = btnLeft.Enabled = btnUp.Enabled = false;
+            acceptControl = false;
+
             // Show all traps
             foreach (Label trapLabel in trapTiles.Values)
             {
@@ -322,29 +344,31 @@ namespace USWGame
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            switch (keyData)
+            if (acceptControl)
             {
-                // Movement keys
-                case Keys.Up:
-                case Keys.W:
-                    // Parameter is the vector to move the player up by 1 cell
-                    PlayerMove((0, -1));
-                    break;
-                case Keys.Down:
-                case Keys.S:
-                    PlayerMove((0, 1));
-                    break;
-                case Keys.Left:
-                case Keys.A:
-                    PlayerMove((-1, 0));
-                    break;
-                case Keys.Right:
-                case Keys.D:
-                    PlayerMove((1, 0));
-                    break;
-                default:
-                    return base.ProcessCmdKey(ref msg, keyData);
-
+                switch (keyData)
+                {
+                    // Movement keys
+                    case Keys.Up:
+                    case Keys.W:
+                        // Parameter is the vector to move the player up by 1 cell
+                        PlayerMove((0, -1));
+                        break;
+                    case Keys.Down:
+                    case Keys.S:
+                        PlayerMove((0, 1));
+                        break;
+                    case Keys.Left:
+                    case Keys.A:
+                        PlayerMove((-1, 0));
+                        break;
+                    case Keys.Right:
+                    case Keys.D:
+                        PlayerMove((1, 0));
+                        break;
+                    default:
+                        return base.ProcessCmdKey(ref msg, keyData);
+                }
             }
             return true;
         }
