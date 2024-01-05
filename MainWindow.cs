@@ -1,4 +1,4 @@
-namespace Truffles
+namespace USWGame
 {
     public partial class MainWindow : Form
     {

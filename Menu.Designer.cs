@@ -1,4 +1,4 @@
-﻿namespace Truffles
+﻿namespace USWGame
 {
     partial class Menu
     {
@@ -152,7 +152,7 @@
             btnRandomise.TabIndex = 10;
             btnRandomise.Text = "Randomise";
             btnRandomise.UseVisualStyleBackColor = true;
-            btnRandomise.Click += RandomiseClicked;
+            btnRandomise.Click += RandomClicked;
             // 
             // btnDefaultValues
             // 

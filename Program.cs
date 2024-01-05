@@ -1,4 +1,4 @@
-namespace Truffles
+namespace USWGame
 {
     internal static class Program
     {

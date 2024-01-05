@@ -1,4 +1,4 @@
-﻿namespace Truffles
+﻿namespace USWGame
 {
     partial class MainWindow
     {

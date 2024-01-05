@@ -1,5 +1,5 @@
 ﻿
-namespace Truffles
+namespace USWGame
 {
     public partial class Menu : Form
     {
@@ -70,7 +70,7 @@ namespace Truffles
             listScoreView.Sort();
         }
 
-        private void RandomiseClicked(object sender, EventArgs e)
+        private void RandomClicked(object sender, EventArgs e)
         {
             Random random = new Random();
             // Randomise all values for generation
