@@ -5,14 +5,15 @@ namespace USWGame
     internal class Settings
     {
         private string FilePath { get; set; }
-        public int NumRows { get; set; }
-        public int NumCols { get; set; }
-        public int NumTraps { get; set; }
-        public int NumFood { get; set; }
+        // Default value get overwritten by settings file if it exists
+        public int NumRows { get; set; } = 13;
+        public int NumCols { get; set; } = 17;
+        public int NumTraps { get; set; } = 10;
+        public int NumFood { get; set; } = 8;
 
         public Settings()
         {
-            FilePath = "settings.txt";
+            FilePath = "settings.conf";
             ReadSettingsFile();
         }
 

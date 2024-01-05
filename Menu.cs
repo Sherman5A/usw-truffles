@@ -3,9 +3,9 @@ namespace USWGame
 {
     public partial class Menu : Form
     {
-        private string filePath = "scores.txt";
+        private string scoresPath = "scores.txt";
         private MainWindow mainWindow;
-        private List<string> scores;
+        private List<string> scores = new();
         private ListViewNumberSort listNumSort;
         private Settings settings;
 
@@ -37,7 +37,16 @@ namespace USWGame
 
         private void LoadScores()
         {
-            scores = File.ReadAllLines(filePath).ToList();
+            using (FileStream createFileIfNotExist = File.Open(scoresPath, FileMode.OpenOrCreate))
+            {
+                StreamReader sr = new StreamReader(createFileIfNotExist);
+                // Read each line unil the end of the file
+                string fileLine;
+                while ((fileLine = sr.ReadLine()) != null)
+                {
+                    scores.Add(fileLine);
+                }
+            }
             listScoreView.Sorting = SortOrder.Descending;
             listScoreView.ListViewItemSorter = listNumSort;
             scores.ForEach(s =>
@@ -66,7 +75,7 @@ namespace USWGame
 
         private void HandleGameQuitEvent(object sender, QuitEventArgs e)
         {
-            File.AppendAllText(filePath, e.PlayerScore + Environment.NewLine);
+            File.AppendAllText(scoresPath, e.PlayerScore + Environment.NewLine);
             mainWindow.Close();
             Show();
             listScoreView.Items.Add(e.PlayerScore.ToString());
