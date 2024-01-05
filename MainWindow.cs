@@ -2,10 +2,10 @@ namespace USWGame
 {
     public partial class MainWindow : Form
     {
+        public Panel gameSpace;
         (int row, int col) playerLocation;
         List<(int row, int col)> foodLocations;
         List<(int row, int col)> trapLocations;
-        public Panel gameSpace;
 
         // Gamemap Variables
         int cellSize = 64;
@@ -21,14 +21,17 @@ namespace USWGame
         int xLeftMargin = 300;
         int xRightMargin = 100;
         int yMargin = 50;
+
         // Default score
         int score = 0;
-        public delegate void QuitEventHander(object sender, QuitEventArgs e);
-        public event QuitEventHander QuitGameEvent;
 
         Label lblPlayer;
-        Dictionary<string, Label> foodLbls;
-        Dictionary<string, Label> trapLbls;
+        Dictionary<string, Label> foodTiles;
+        Dictionary<string, Label> trapTiles;
+        Dictionary<string, Label> trailTiles;
+
+        public delegate void QuitEventHander(object sender, QuitEventArgs e);
+        public event QuitEventHander QuitGameEvent;
 
         public MainWindow(int numRows, int numCols, int numFood, int numTraps)
         {
@@ -40,8 +43,9 @@ namespace USWGame
             InitializeComponent();
             foodLocations = new();
             trapLocations = new();
-            foodLbls = new Dictionary<string, Label>();
-            trapLbls = new Dictionary<string, Label>();
+            foodTiles = new();
+            trapTiles = new();
+            trailTiles = new();
             gameSpace = new Panel();
         }
 
@@ -51,10 +55,8 @@ namespace USWGame
             SetupGameSpace();
 
             AddFood(numFood);
-            PlotFood();
 
             AddTraps(numTraps);
-            PlotTraps();
 
             lblPlayer = AddPlayer();
             // Bring player to front, over food, traps, trail
@@ -76,7 +78,6 @@ namespace USWGame
             gameSpace.Location = new Point(xLeftMargin, yMargin / 2);
             Controls.Add(gameSpace);
         }
-
 
         /// <summary>
         /// Adds the player character to the board
@@ -114,19 +115,13 @@ namespace USWGame
                     !foodLocations.Contains(trapLocation))
                 {
                     trapLocations.Add(trapLocation);
+                    string trapLabel = $"{trapLocation.row}-{trapLocation.col}-trap";
+                    trapTiles.Add(
+                        trapLabel,
+                        AddLabel(trapLocation, Color.LightGoldenrodYellow, trapLabel, new Bitmap(Properties.Resources.bombIcon), hideDefault: true)
+                    );
                     found++;
                 }
-            }
-        }
-        private void PlotTraps()
-        {
-            foreach ((int row, int col) trapLocation in trapLocations)
-            {
-                string trapLabel = $"{trapLocation.row}-{trapLocation.col}-trap";
-                trapLbls.Add(
-                    trapLabel,
-                    AddLabel(trapLocation, Color.LightGoldenrodYellow, trapLabel, new Bitmap(Properties.Resources.bombIcon))
-                );
             }
         }
 
@@ -144,20 +139,13 @@ namespace USWGame
                 if (!foodLocations.Contains(foodLocation))
                 {
                     foodLocations.Add(foodLocation);
+                    string foodLabel = $"{foodLocation.row}-{foodLocation.col}-food";
+                    foodTiles.Add(
+                        foodLabel,
+                        AddLabel(foodLocation, Color.DarkRed, foodLabel, new Bitmap(Properties.Resources.foodIcon))
+                    );
                     found++;
                 }
-            }
-        }
-
-        private void PlotFood()
-        {
-            foreach ((int row, int col) foodLocation in foodLocations)
-            {
-                string foodLabel = $"{foodLocation.row}-{foodLocation.col}-food";
-                foodLbls.Add(
-                    foodLabel,
-                    AddLabel(foodLocation, Color.DarkRed, foodLabel, new Bitmap(Properties.Resources.foodIcon))
-                );
             }
         }
 
@@ -176,11 +164,15 @@ namespace USWGame
             return addedLabel;
         }
 
-        private Label AddLabel((int row, int col) location, Color color, string labelText, Bitmap bitmap)
+        private Label AddLabel((int row, int col) location, Color color, string labelText, Bitmap bitmap, bool hideDefault = false)
         {
             Label addedLabel = AddLabel(location, color, labelText);
             Bitmap resizedBitmap = new Bitmap(bitmap, addedLabel.Size);
             addedLabel.Image = resizedBitmap;
+            if (hideDefault)
+            {
+                addedLabel.Hide();
+            }
             return addedLabel;
         }
 
@@ -213,7 +205,14 @@ namespace USWGame
 
         private void PlayerMove((int row, int col) movementVector)
         {
-            AddLabel(playerLocation, Color.Orchid, $"{playerLocation.row}-{playerLocation.col}-trail");
+            string trailLabelName = $"{playerLocation.row}-{playerLocation.col}-trail";
+            if (!trailTiles.ContainsKey(trailLabelName))
+            {
+                trailTiles.Add(
+                    trailLabelName,
+                    AddLabel(playerLocation, Color.Orchid, trailLabelName)
+                );
+            }
             playerLocation.row = Clamp(playerLocation.row + movementVector.row, 0, numRows - 1);
             playerLocation.col = Clamp(playerLocation.col + movementVector.col, 0, numCols - 1);
             lblPlayer.Location = new Point(playerLocation.row * cellSize, playerLocation.col * cellSize);
@@ -236,17 +235,36 @@ namespace USWGame
             ChangeRiskLabel(CountNearbyTraps());
         }
 
-        private void PlayerOnTrap()
+        private async void PlayerOnTrap()
         {
             btnDown.Enabled = btnRight.Enabled = btnLeft.Enabled = btnUp.Enabled = false;
-            PlotTraps();
-            MessageBox.Show("You died");
+            // Show all traps
+            foreach (Label trapLabel in trapTiles.Values)
+            {
+                trapLabel.Show();
+            }
+            BackColor = Color.LightPink;
+
+            await FlashDeathTile();
+
+            MessageBox.Show("You have died");
 
             QuitEventArgs args = new QuitEventArgs()
             {
                 PlayerScore = score,
             };
             QuitGameEvent(this, args);
+        }
+
+        private async Task FlashDeathTile()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                await Task.Delay(500);
+                trapTiles[$"{playerLocation.row}-{playerLocation.col}-trap"].BringToFront();
+                await Task.Delay(500);
+                lblPlayer.BringToFront();
+            }
         }
 
         private void ChangeRiskLabel(int nearTraps)
@@ -294,12 +312,12 @@ namespace USWGame
             score += 10;
             lblScore.Text = score.ToString();
             foodLocations.Remove(playerLocation);
-            RemoveLabel(playerLocation);
+            RemoveFood(playerLocation);
         }
 
-        private void RemoveLabel((int row, int col) playerLocation)
+        private void RemoveFood((int row, int col) playerLocation)
         {
-            gameSpace.Controls.Remove(foodLbls[$"{playerLocation.row}-{playerLocation.col}-food"]);
+            gameSpace.Controls.Remove(foodTiles[$"{playerLocation.row}-{playerLocation.col}-food"]);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
