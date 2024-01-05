@@ -10,24 +10,28 @@ namespace USWGame
 
         // Gamemap Variables
         int cellSize = 64;
-        int numRows = 17;
-        int numCols = 13;
+        int numRows;
+        int numCols;
+        // Number of squares containing food
+        int numFood;
+        // Number of squares containing traps
+        int numTraps;
 
         // Control area
         // Extra space x
         int xSpaceShift = 400;
         // Extra space y
         int ySpaceShift = 200;
-
-        // Number of squares containing truffles
-        int numTruffles = 10;
-        // Number of squares containing traps
-        int numTraps = 8;
         // Default score
         int score = 0;
 
-        public MainWindow()
+        public MainWindow(int numRows, int numCols, int numFood, int numTraps)
         {
+            this.numRows = numRows;
+            this.numCols = numCols;
+            this.numFood = numFood;
+            this.numTraps = numTraps;
+
             InitializeComponent();
             foodLocations = new();
             trapLocations = new();
@@ -55,7 +59,7 @@ namespace USWGame
             SetupMainWindow();
             SetupGameSpace();
             // AddLabel(6, 8);
-            AddFood(numTruffles);
+            AddFood(numFood);
             PlotFood();
 
             AddTraps(numTraps);

@@ -58,7 +58,7 @@ namespace USWGame
 
         private void BtnStartClicked(object sender, EventArgs e)
         {
-            mainWindow = new MainWindow();
+            mainWindow = new MainWindow((int)numRow.Value, (int)numCol.Value, (int)numFood.Value, (int)numTraps.Value);
             mainWindow.Show();
             mainWindow.QuitGameEvent += HandleGameQuitEvent;
             Hide();
