@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace USWGame
+﻿namespace USWGame
 {
     internal class Settings
     {
@@ -32,7 +30,6 @@ namespace USWGame
                 string fileLine;
                 while ((fileLine = sr.ReadLine()) != null)
                 {
-                    Debug.WriteLine(fileLine);
                     string[] splitLine = fileLine.Split(',');
                     switch (splitLine[0])
                     {
@@ -50,8 +47,6 @@ namespace USWGame
                             break;
                     }
                 }
-                Debug.WriteLine(ToString());
-                // Explicitly close streamreader 
                 sr.Close();
             }
         }

@@ -52,10 +52,9 @@
             // 
             // btnStart
             // 
-            btnStart.Location = new Point(32, 316);
-            btnStart.Margin = new Padding(4, 5, 4, 5);
+            btnStart.Location = new Point(22, 190);
             btnStart.Name = "btnStart";
-            btnStart.Size = new Size(513, 320);
+            btnStart.Size = new Size(359, 192);
             btnStart.TabIndex = 0;
             btnStart.Text = "Start";
             btnStart.UseVisualStyleBackColor = true;
@@ -63,10 +62,9 @@
             // 
             // btnQuit
             // 
-            btnQuit.Location = new Point(598, 316);
-            btnQuit.Margin = new Padding(4, 5, 4, 5);
+            btnQuit.Location = new Point(419, 190);
             btnQuit.Name = "btnQuit";
-            btnQuit.Size = new Size(513, 320);
+            btnQuit.Size = new Size(359, 192);
             btnQuit.TabIndex = 1;
             btnQuit.Text = "Quit";
             btnQuit.UseVisualStyleBackColor = true;
@@ -74,27 +72,24 @@
             // 
             // numCol
             // 
-            numCol.Location = new Point(208, 165);
-            numCol.Margin = new Padding(4, 5, 4, 5);
+            numCol.Location = new Point(146, 99);
             numCol.Name = "numCol";
-            numCol.Size = new Size(122, 31);
+            numCol.Size = new Size(85, 23);
             numCol.TabIndex = 2;
             // 
             // numRow
             // 
-            numRow.Location = new Point(209, 117);
-            numRow.Margin = new Padding(4, 5, 4, 5);
+            numRow.Location = new Point(146, 70);
             numRow.Name = "numRow";
-            numRow.Size = new Size(122, 31);
+            numRow.Size = new Size(85, 23);
             numRow.TabIndex = 3;
             // 
             // lblNumCol
             // 
             lblNumCol.AutoSize = true;
-            lblNumCol.Location = new Point(32, 169);
-            lblNumCol.Margin = new Padding(4, 0, 4, 0);
+            lblNumCol.Location = new Point(22, 101);
             lblNumCol.Name = "lblNumCol";
-            lblNumCol.Size = new Size(171, 25);
+            lblNumCol.Size = new Size(114, 15);
             lblNumCol.TabIndex = 4;
             lblNumCol.Text = "Number of columns";
             lblNumCol.TextAlign = ContentAlignment.MiddleRight;
@@ -102,10 +97,9 @@
             // lblNumRow
             // 
             lblNumRow.AutoSize = true;
-            lblNumRow.Location = new Point(63, 119);
-            lblNumRow.Margin = new Padding(4, 0, 4, 0);
+            lblNumRow.Location = new Point(44, 71);
             lblNumRow.Name = "lblNumRow";
-            lblNumRow.Size = new Size(142, 25);
+            lblNumRow.Size = new Size(93, 15);
             lblNumRow.TabIndex = 5;
             lblNumRow.Text = "Number of rows";
             lblNumRow.TextAlign = ContentAlignment.MiddleRight;
@@ -113,10 +107,9 @@
             // lblNumFood
             // 
             lblNumFood.AutoSize = true;
-            lblNumFood.Location = new Point(62, 215);
-            lblNumFood.Margin = new Padding(4, 0, 4, 0);
+            lblNumFood.Location = new Point(43, 129);
             lblNumFood.Name = "lblNumFood";
-            lblNumFood.Size = new Size(143, 25);
+            lblNumFood.Size = new Size(93, 15);
             lblNumFood.TabIndex = 6;
             lblNumFood.Text = "Amount of food";
             lblNumFood.TextAlign = ContentAlignment.MiddleRight;
@@ -124,36 +117,32 @@
             // lblNumTraps
             // 
             lblNumTraps.AutoSize = true;
-            lblNumTraps.Location = new Point(60, 264);
-            lblNumTraps.Margin = new Padding(4, 0, 4, 0);
+            lblNumTraps.Location = new Point(42, 158);
             lblNumTraps.Name = "lblNumTraps";
-            lblNumTraps.Size = new Size(144, 25);
+            lblNumTraps.Size = new Size(94, 15);
             lblNumTraps.TabIndex = 7;
             lblNumTraps.Text = "Number of traps";
             lblNumTraps.TextAlign = ContentAlignment.MiddleRight;
             // 
             // numFood
             // 
-            numFood.Location = new Point(208, 211);
-            numFood.Margin = new Padding(4, 5, 4, 5);
+            numFood.Location = new Point(146, 127);
             numFood.Name = "numFood";
-            numFood.Size = new Size(122, 31);
+            numFood.Size = new Size(85, 23);
             numFood.TabIndex = 8;
             // 
             // numTraps
             // 
-            numTraps.Location = new Point(208, 260);
-            numTraps.Margin = new Padding(4, 5, 4, 5);
+            numTraps.Location = new Point(146, 156);
             numTraps.Name = "numTraps";
-            numTraps.Size = new Size(122, 31);
+            numTraps.Size = new Size(85, 23);
             numTraps.TabIndex = 9;
             // 
             // btnRandomise
             // 
-            btnRandomise.Location = new Point(352, 241);
-            btnRandomise.Margin = new Padding(4, 5, 4, 5);
+            btnRandomise.Location = new Point(246, 145);
             btnRandomise.Name = "btnRandomise";
-            btnRandomise.Size = new Size(193, 50);
+            btnRandomise.Size = new Size(135, 30);
             btnRandomise.TabIndex = 10;
             btnRandomise.Text = "Randomise settings";
             btnRandomise.UseVisualStyleBackColor = true;
@@ -161,10 +150,9 @@
             // 
             // btnDefaultValues
             // 
-            btnDefaultValues.Location = new Point(352, 117);
-            btnDefaultValues.Margin = new Padding(4, 5, 4, 5);
+            btnDefaultValues.Location = new Point(246, 70);
             btnDefaultValues.Name = "btnDefaultValues";
-            btnDefaultValues.Size = new Size(193, 50);
+            btnDefaultValues.Size = new Size(135, 30);
             btnDefaultValues.TabIndex = 11;
             btnDefaultValues.Text = "Load settings";
             btnDefaultValues.UseVisualStyleBackColor = true;
@@ -173,10 +161,9 @@
             // listScoreView
             // 
             listScoreView.Columns.AddRange(new ColumnHeader[] { colScores });
-            listScoreView.Location = new Point(598, 119);
-            listScoreView.Margin = new Padding(4, 5, 4, 5);
+            listScoreView.Location = new Point(419, 71);
             listScoreView.Name = "listScoreView";
-            listScoreView.Size = new Size(513, 178);
+            listScoreView.Size = new Size(360, 108);
             listScoreView.TabIndex = 12;
             listScoreView.UseCompatibleStateImageBehavior = false;
             listScoreView.View = View.Details;
@@ -191,20 +178,18 @@
             // 
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 26.25F, FontStyle.Regular, GraphicsUnit.Point);
-            lblTitle.Location = new Point(411, 15);
-            lblTitle.Margin = new Padding(4, 0, 4, 0);
+            lblTitle.Location = new Point(300, 9);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(301, 71);
+            lblTitle.Size = new Size(200, 47);
             lblTitle.TabIndex = 13;
             lblTitle.Text = "Food Game";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnSaveSettings
             // 
-            btnSaveSettings.Location = new Point(352, 177);
-            btnSaveSettings.Margin = new Padding(4, 5, 4, 5);
+            btnSaveSettings.Location = new Point(246, 106);
             btnSaveSettings.Name = "btnSaveSettings";
-            btnSaveSettings.Size = new Size(193, 50);
+            btnSaveSettings.Size = new Size(135, 30);
             btnSaveSettings.TabIndex = 14;
             btnSaveSettings.Text = "Save settings";
             btnSaveSettings.UseVisualStyleBackColor = true;
@@ -212,9 +197,9 @@
             // 
             // Menu
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1142, 750);
+            ClientSize = new Size(799, 450);
             Controls.Add(btnSaveSettings);
             Controls.Add(lblTitle);
             Controls.Add(listScoreView);
@@ -230,7 +215,6 @@
             Controls.Add(numCol);
             Controls.Add(btnQuit);
             Controls.Add(btnStart);
-            Margin = new Padding(4, 5, 4, 5);
             Name = "Menu";
             Text = "Main Menu";
             Load += MenuLoad;

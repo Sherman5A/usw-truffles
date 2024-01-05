@@ -24,7 +24,6 @@ namespace USWGame
         {
             LoadScores();
             LoadSettings();
-
         }
 
         private void LoadSettings()
