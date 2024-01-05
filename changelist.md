@@ -12,5 +12,6 @@
 	- WASD keys
 - Added a menu form
 - Add event handling for closing the game and reopening the main menu
-- Add scoreboard through file IO operations
+- Add scoreboard through file I/O operations
 - Add scoreboard sorting
+- Add a settings save function through file I/O operatons
