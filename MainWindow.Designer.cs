@@ -37,6 +37,8 @@
             lblRiskTitle = new Label();
             lblScoreTitle = new Label();
             button1 = new Button();
+            lblRoundsTitle = new Label();
+            lblRounds = new Label();
             SuspendLayout();
             // 
             // btnUp
@@ -94,9 +96,9 @@
             // lblRisk
             // 
             lblRisk.Font = new Font("Centaur", 24F, FontStyle.Regular, GraphicsUnit.Point);
-            lblRisk.Location = new Point(127, 451);
+            lblRisk.Location = new Point(150, 446);
             lblRisk.Name = "lblRisk";
-            lblRisk.Size = new Size(118, 49);
+            lblRisk.Size = new Size(107, 49);
             lblRisk.TabIndex = 4;
             lblRisk.Text = "0";
             lblRisk.TextAlign = ContentAlignment.MiddleLeft;
@@ -104,9 +106,9 @@
             // lblScore
             // 
             lblScore.Font = new Font("Centaur", 24F, FontStyle.Regular, GraphicsUnit.Point);
-            lblScore.Location = new Point(127, 557);
+            lblScore.Location = new Point(148, 509);
             lblScore.Name = "lblScore";
-            lblScore.Size = new Size(118, 49);
+            lblScore.Size = new Size(107, 49);
             lblScore.TabIndex = 5;
             lblScore.Text = "0";
             lblScore.TextAlign = ContentAlignment.MiddleLeft;
@@ -114,9 +116,9 @@
             // lblRiskTitle
             // 
             lblRiskTitle.Font = new Font("High Tower Text", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point);
-            lblRiskTitle.Location = new Point(35, 451);
+            lblRiskTitle.Location = new Point(47, 446);
             lblRiskTitle.Name = "lblRiskTitle";
-            lblRiskTitle.Size = new Size(98, 49);
+            lblRiskTitle.Size = new Size(97, 49);
             lblRiskTitle.TabIndex = 6;
             lblRiskTitle.Text = "Risk:";
             lblRiskTitle.TextAlign = ContentAlignment.MiddleRight;
@@ -124,9 +126,9 @@
             // lblScoreTitle
             // 
             lblScoreTitle.Font = new Font("High Tower Text", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point);
-            lblScoreTitle.Location = new Point(12, 557);
+            lblScoreTitle.Location = new Point(33, 509);
             lblScoreTitle.Name = "lblScoreTitle";
-            lblScoreTitle.Size = new Size(122, 49);
+            lblScoreTitle.Size = new Size(111, 49);
             lblScoreTitle.TabIndex = 7;
             lblScoreTitle.Text = "Score:";
             lblScoreTitle.TextAlign = ContentAlignment.MiddleRight;
@@ -144,12 +146,34 @@
             button1.UseVisualStyleBackColor = false;
             button1.Click += QuitClicked;
             // 
+            // lblRoundsTitle
+            // 
+            lblRoundsTitle.Font = new Font("High Tower Text", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point);
+            lblRoundsTitle.Location = new Point(0, 571);
+            lblRoundsTitle.Name = "lblRoundsTitle";
+            lblRoundsTitle.Size = new Size(144, 49);
+            lblRoundsTitle.TabIndex = 9;
+            lblRoundsTitle.Text = "Rounds:";
+            lblRoundsTitle.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // lblRounds
+            // 
+            lblRounds.Font = new Font("Centaur", 24F, FontStyle.Regular, GraphicsUnit.Point);
+            lblRounds.Location = new Point(148, 571);
+            lblRounds.Name = "lblRounds";
+            lblRounds.Size = new Size(107, 49);
+            lblRounds.TabIndex = 10;
+            lblRounds.Text = "0";
+            lblRounds.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.LavenderBlush;
             ClientSize = new Size(1098, 1021);
+            Controls.Add(lblRounds);
+            Controls.Add(lblRoundsTitle);
             Controls.Add(button1);
             Controls.Add(lblScoreTitle);
             Controls.Add(lblRiskTitle);
@@ -178,5 +202,7 @@
         private Label lblRiskTitle;
         private Label lblScoreTitle;
         private Button button1;
+        private Label lblRoundsTitle;
+        private Label lblRounds;
     }
 }

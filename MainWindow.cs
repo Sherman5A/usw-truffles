@@ -27,6 +27,7 @@ namespace USWGame
 
         // Default score
         int score = 0;
+        int roundsCompleted = 0;
 
         Label lblPlayer;
         Dictionary<string, Label> foodTiles;
@@ -186,9 +187,11 @@ namespace USWGame
                 {
                     foodLocations.Add(foodLocation);
                     string foodLabel = $"{foodLocation.row}-{foodLocation.col}-food";
+                    Label createdFoodLabel = AddLabel(foodLocation, Color.Transparent, foodLabel, new Bitmap(Properties.Resources.foodIcon));
+                    createdFoodLabel.BringToFront();
                     foodTiles.Add(
                         foodLabel,
-                        AddLabel(foodLocation, Color.DarkRed, foodLabel, new Bitmap(Properties.Resources.foodIcon))
+                        createdFoodLabel
                     );
                     found++;
                 }
@@ -288,10 +291,9 @@ namespace USWGame
             string trailLabelName = $"{playerLocation.row}-{playerLocation.col}-trail";
             if (!trailTiles.ContainsKey(trailLabelName))
             {
-                trailTiles.Add(
-                    trailLabelName,
-                    AddLabel(playerLocation, Color.Orchid, trailLabelName)
-                );
+                Label createdLabel = AddLabel(playerLocation, Color.Orchid, trailLabelName);
+                createdLabel.SendToBack();
+                trailTiles.Add(trailLabelName, createdLabel);
             }
             playerLocation.row = Clamp(playerLocation.row + movementVector.row, 0, numRows - 1);
             playerLocation.col = Clamp(playerLocation.col + movementVector.col, 0, numCols - 1);
@@ -331,7 +333,6 @@ namespace USWGame
             {
                 trapLabel.Show();
             }
-            BackColor = Color.LightPink;
 
             BackColor = Color.IndianRed;
 
@@ -414,13 +415,23 @@ namespace USWGame
         {
             score += 10;
             lblScore.Text = score.ToString();
+            string foodLabel = $"{playerLocation.row}-{playerLocation.col}-food";
             foodLocations.Remove(playerLocation);
-            RemoveFood(playerLocation);
-        }
+            gameSpace.Controls.Remove(foodTiles[foodLabel]);
+            foodTiles.Remove(foodLabel);
 
-        private void RemoveFood((int row, int col) playerLocation)
-        {
-            gameSpace.Controls.Remove(foodTiles[$"{playerLocation.row}-{playerLocation.col}-food"]);
+            if (foodTiles.Count == 0)
+            {
+                AddFood(numFood);
+                if (trapTiles.Count < (numRows * numCols) / 4)
+                {
+                    roundsCompleted++;
+                    lblRounds.Text = $"{roundsCompleted}";
+                    // Add traps - Clamp ensures difficultly does is not too high on settings with with few traps
+                    // e.g 100 squares with 5 traps, adds 20 traps when food is collected - too many traps
+                    AddTraps((numRows * numCols) / Clamp(trapTiles.Count, 20, numRows * numCols));
+                }
+            }
         }
 
         /// <summary>
@@ -459,7 +470,7 @@ namespace USWGame
         }
 
         /// <summary>
-        /// 
+        /// Exits the game and returns to the main menu
         /// </summary>
         private void QuitGame()
         {
@@ -477,11 +488,7 @@ namespace USWGame
         /// <param name="e"></param>
         private void QuitClicked(object sender, EventArgs e)
         {
-            QuitEventArgs args = new QuitEventArgs()
-            {
-                PlayerScore = score,
-            };
-            QuitGameEvent(this, args);
+            QuitGame();
         }
     }
 }
