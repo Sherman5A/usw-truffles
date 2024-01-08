@@ -26,7 +26,7 @@
             using (FileStream createFileIfNotExist = File.Open(FilePath, FileMode.OpenOrCreate))
             {
                 StreamReader sr = new StreamReader(createFileIfNotExist);
-                // Read each line unil the end of the file
+                // Read each line until the end of the file
                 string fileLine;
                 while ((fileLine = sr.ReadLine()) != null)
                 {
