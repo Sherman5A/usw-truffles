@@ -372,5 +372,14 @@ namespace USWGame
             }
             return true;
         }
+
+        private void QuitClicked(object sender, EventArgs e)
+        {
+            QuitEventArgs args = new QuitEventArgs()
+            {
+                PlayerScore = score,
+            };
+            QuitGameEvent(this, args);
+        }
     }
 }
