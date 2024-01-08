@@ -8,19 +8,19 @@ namespace USWGame
         List<(int row, int col)> trapLocations;
 
         // Gamemap Variables
-        int cellSize = 64;
-        int numRows;
-        int numCols;
+        readonly int cellSize = 64;
+        readonly int numRows;
+        readonly int numCols;
         // Number of squares containing food
-        int numFood;
+        readonly int numFood;
         // Number of squares containing traps
-        int numTraps;
+        readonly int numTraps;
 
         // Control area
         // Extra space x
-        int xLeftMargin = 300;
-        int xRightMargin = 100;
-        int yMargin = 50;
+        const int xLeftMargin = 300;
+        const int xRightMargin = 100;
+        const int yMargin = 50;
 
         // Accept control input
         bool acceptControl = true;
@@ -152,13 +152,15 @@ namespace USWGame
                 (int row, int col) trapLocation = (trapRow, trapColumn);
 
                 if (!trapLocations.Contains(trapLocation) &&
-                    !foodLocations.Contains(trapLocation))
+                    !foodLocations.Contains(trapLocation) &&
+                    !playerLocation.Equals(trapLocation)
+                    )
                 {
                     trapLocations.Add(trapLocation);
                     string trapLabel = $"{trapLocation.row}-{trapLocation.col}-trap";
                     trapTiles.Add(
                         trapLabel,
-                        AddLabel(trapLocation, Color.LightGoldenrodYellow, trapLabel, new Bitmap(Properties.Resources.bombIcon), hideDefault: true)
+                        AddLabel(trapLocation, Color.Transparent, trapLabel, new Bitmap(Properties.Resources.bombIcon), hideDefault: false)
                     );
                     found++;
                 }
@@ -180,7 +182,7 @@ namespace USWGame
                 int foodCol = rnd.Next(numCols);
                 (int row, int col) foodLocation = (foodRow, foodCol);
 
-                if (!foodLocations.Contains(foodLocation))
+                if (!(foodLocations.Contains(foodLocation) || trapLocations.Contains(foodLocation) || playerLocation.Equals(foodLocation)))
                 {
                     foodLocations.Add(foodLocation);
                     string foodLabel = $"{foodLocation.row}-{foodLocation.col}-food";
@@ -203,7 +205,7 @@ namespace USWGame
         private Label AddLabel((int row, int col) location, Color colour, string labelText)
         {
             // Turn into constructor function, this will allow for code reuse in future with label and label images
-            Label addedLabel = new Label
+            Label addedLabel = new Label()
             {
                 AutoSize = false,
                 Size = new Size(cellSize, cellSize),
@@ -331,15 +333,13 @@ namespace USWGame
             }
             BackColor = Color.LightPink;
 
+            BackColor = Color.IndianRed;
+
             await FlashDeathTile();
 
             MessageBox.Show("You have died");
 
-            QuitEventArgs args = new QuitEventArgs()
-            {
-                PlayerScore = score,
-            };
-            QuitGameEvent(this, args);
+            QuitGame();
         }
 
         /// <summary>
@@ -367,7 +367,7 @@ namespace USWGame
             switch (nearTraps)
             {
                 case 0:
-                    lblRisk.BackColor = Color.White;
+                    lblRisk.BackColor = Color.Transparent;
                     break;
                 case 1:
                     lblRisk.BackColor = Color.Yellow;
@@ -380,6 +380,7 @@ namespace USWGame
                     break;
             }
         }
+
         /// <summary>
         /// Count the adjacent traps next to the player
         /// </summary>
@@ -393,8 +394,10 @@ namespace USWGame
 
             int nearTraps = 0;
 
-            foreach (var directionVector in neighbourVectors)
+            // Go through each relative vector to check all adjacent squares
+            foreach ((int row, int col) directionVector in neighbourVectors)
             {
+
                 (int row, int col) checkLocation = (playerLocation.row + directionVector.row, playerLocation.col + directionVector.col);
                 if (trapLocations.Contains(checkLocation))
                 {
@@ -453,6 +456,18 @@ namespace USWGame
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void QuitGame()
+        {
+            QuitEventArgs args = new QuitEventArgs()
+            {
+                PlayerScore = score,
+            };
+            QuitGameEvent(this, args);
         }
 
         /// <summary>
