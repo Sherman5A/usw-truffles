@@ -1,5 +1,3 @@
-using System.Security;
-
 namespace USWGame
 {
     public partial class MainWindow : Form
@@ -10,7 +8,7 @@ namespace USWGame
         List<(int row, int col)> trapLocations;
 
         // Gamemap Variables
-        int cellSize = 64;
+        int cellSize;
         int numRows;
         int numCols;
         // Number of squares containing food
@@ -38,12 +36,13 @@ namespace USWGame
         public delegate void QuitEventHander(object sender, QuitEventArgs e);
         public event QuitEventHander QuitGameEvent;
 
-        public MainWindow(int numRows, int numCols, int numFood, int numTraps)
+        public MainWindow(int numRows, int numCols, int numFood, int numTraps, int cellSize)
         {
             this.numRows = numRows;
             this.numCols = numCols;
             this.numFood = numFood;
             this.numTraps = numTraps;
+            this.cellSize = cellSize;
 
             InitializeComponent();
             foodLocations = new();
