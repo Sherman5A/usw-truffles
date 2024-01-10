@@ -172,7 +172,7 @@
             btnDefaultValues.TabIndex = 11;
             btnDefaultValues.Text = "Load settings";
             btnDefaultValues.UseVisualStyleBackColor = true;
-            btnDefaultValues.Click += DefaultClicked;
+            btnDefaultValues.Click += LoadSettingsClicked;
             // 
             // listScoreView
             // 

@@ -1,5 +1,7 @@
 
-# Changelog
+# USWGame
+
+## Changelog
 
 Changelog is in several formats:
 - Markdown - `changelist.md`
