@@ -18,7 +18,7 @@ namespace USWGame
 
         // Control area
         // Extra space x
-        const int xLeftMargin = 300;
+        const int xLeftMargin = 350;
         const int xRightMargin = 100;
         const int yMargin = 50;
 
@@ -108,6 +108,7 @@ namespace USWGame
             gameSpace.Name = "gameSpace";
             gameSpace.TabIndex = 0;
             gameSpace.BackColor = Color.LightPink;
+            // Ensure margin is both above and below
             gameSpace.Location = new Point(xLeftMargin, yMargin / 2);
             Controls.Add(gameSpace);
         }
@@ -127,6 +128,7 @@ namespace USWGame
                 int playerColumn = rnd.Next(numCols);
                 (int row, int col) locationAttempt = (playerRow, playerColumn);
 
+                // Prevent player from spawning on trap or food
                 if (!trapLocations.Contains(locationAttempt) &&
                     !foodLocations.Contains(locationAttempt))
                 {
@@ -152,14 +154,14 @@ namespace USWGame
                 int trapRow = rnd.Next(numRows);
                 int trapColumn = rnd.Next(numCols);
                 (int row, int col) trapLocation = (trapRow, trapColumn);
-
+                // Prevent double traps and traps on food
                 if (!trapLocations.Contains(trapLocation) &&
                     !foodLocations.Contains(trapLocation) &&
                     !playerLocation.Equals(trapLocation)
                     )
                 {
-                    trapLocations.Add(trapLocation);
                     string trapLabel = $"{trapLocation.row}-{trapLocation.col}-trap";
+                    trapLocations.Add(trapLocation);
                     trapTiles.Add(
                         trapLabel,
                         AddLabel(trapLocation, Color.Transparent, trapLabel, new Bitmap(Properties.Resources.bombIcon), hideDefault: false)
@@ -249,12 +251,12 @@ namespace USWGame
         /// <exception cref="InvalidOperationException">Button does not have a tag</exception>
         private void MovementButtonClicked(object sender, EventArgs e)
         {
-
             Button buttonPressed = sender as Button;
             if (buttonPressed.Tag is null)
             {
                 throw new InvalidOperationException("Expected button sender to have a tag denoting button direction");
             }
+            // Button's tag contains the direction of the button
             string buttonDirection = (string)buttonPressed.Tag;
 
             Dictionary<string, (int row, int col)> movementVector = new()
@@ -289,6 +291,7 @@ namespace USWGame
         /// <param name="movementVector">Coordinates to move the player by</param>
         private void PlayerMove((int row, int col) movementVector)
         {
+            // Sound.PlaySound(moveNoise);
             string trailLabelName = $"{playerLocation.row}-{playerLocation.col}-trail";
             if (!trailTiles.ContainsKey(trailLabelName))
             {
@@ -299,7 +302,6 @@ namespace USWGame
             playerLocation.row = Clamp(playerLocation.row + movementVector.row, 0, numRows - 1);
             playerLocation.col = Clamp(playerLocation.col + movementVector.col, 0, numCols - 1);
             lblPlayer.Location = new Point(playerLocation.row * cellSize, playerLocation.col * cellSize);
-
             CollisionCheck();
         }
 
@@ -308,6 +310,8 @@ namespace USWGame
         /// </summary>
         private void CollisionCheck()
         {
+            ChangeRiskLabel(CountNearbyTraps());
+
             if (trapLocations.Contains(playerLocation))
             {
                 PlayerOnTrap();
@@ -318,7 +322,6 @@ namespace USWGame
             {
                 PlayerOnFood();
             }
-            ChangeRiskLabel(CountNearbyTraps());
         }
 
         /// <summary>
@@ -326,10 +329,13 @@ namespace USWGame
         /// </summary>
         private async void PlayerOnTrap()
         {
+            // Sound.PlaySound(bombNoise);
+            // BackColor = Color.IndianRed;
             btnDown.Enabled = btnRight.Enabled = btnLeft.Enabled = btnUp.Enabled = false;
+            // Prevent movement keyboard input
             acceptControl = false;
 
-            // Show all traps
+            // Show all traps as game is over
             foreach (Label trapLabel in trapTiles.Values)
             {
                 trapLabel.Show();
@@ -376,6 +382,7 @@ namespace USWGame
                     break;
                 case 2:
                     lblRisk.BackColor = Color.Orange;
+                    // Sound.PlaySound(amogus);
                     break;
                 case 3:
                     lblRisk.BackColor = Color.Red;
@@ -414,6 +421,7 @@ namespace USWGame
         /// </summary>
         private void PlayerOnFood()
         {
+            // Sound.PlaySound(eatnoise);
             score += 10;
             lblScore.Text = score.ToString();
             string foodLabel = $"{playerLocation.row}-{playerLocation.col}-food";

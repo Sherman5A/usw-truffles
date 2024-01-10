@@ -1,4 +1,4 @@
-# Changelist
+# USWGame Changelist
 
 ## New Featues
 
@@ -14,6 +14,9 @@
 - Add a settings save function to `Menu.cs` through file I/O operatons
 - Add condition when the user collects all of the food 
 - When player died sprite death is swapped to show clearly they landed on a trap
+- Add round counter
+- Add repopulation of food
+- Add more traps as rounds increase
 
 ## Rewrites
 
@@ -24,4 +27,6 @@
 - Reorganise constructor and class properties
 - Rewrite the `AddLabel` function
 - Add an `AddLabel` overload for passing Bitmaps
-- Remove `PlotTraps()`, and `PlotFood()` in favour using `Show()` and `Hide()`
+- Remove `PlotTraps()`, and `PlotFood()` in favour using `Show()` and `Hide()` with `Label` within the `Dictionary` class
+- Add docstrings to major methods
+- Add sprites to arrows
