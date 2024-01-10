@@ -110,6 +110,7 @@ namespace USWGame
             gameSpace.BackColor = Color.LightPink;
             // Ensure margin is both above and below
             gameSpace.Location = new Point(xLeftMargin, yMargin / 2);
+            gameSpace.BackgroundImage = new Bitmap(Properties.Resources.tileUnmined);
             Controls.Add(gameSpace);
         }
 
@@ -133,7 +134,7 @@ namespace USWGame
                     !foodLocations.Contains(locationAttempt))
                 {
                     playerLocation = locationAttempt;
-                    return AddLabel(locationAttempt, Color.Magenta, "lblPlayer", new Bitmap(Properties.Resources.playerIcon));
+                    return AddLabel(locationAttempt, Color.Transparent, "lblPlayer", new Bitmap(Properties.Resources.playerIcon));
                 }
             }
         }
@@ -160,12 +161,11 @@ namespace USWGame
                     !playerLocation.Equals(trapLocation)
                     )
                 {
-                    string trapLabel = $"{trapLocation.row}-{trapLocation.col}-trap";
+                    string trapLabelName = $"{trapLocation.row}-{trapLocation.col}-trap";
                     trapLocations.Add(trapLocation);
-                    trapTiles.Add(
-                        trapLabel,
-                        AddLabel(trapLocation, Color.Transparent, trapLabel, new Bitmap(Properties.Resources.bombIcon), hideDefault: false)
-                    );
+                    Label trapLabel = AddLabel(trapLocation, Color.Transparent, trapLabelName, new Bitmap(Properties.Resources.tileTrap), hideDefault: false);
+                    trapLabel.BringToFront();
+                    trapTiles.Add(trapLabelName, trapLabel);
                     found++;
                 }
             }
@@ -188,14 +188,12 @@ namespace USWGame
 
                 if (!(foodLocations.Contains(foodLocation) || trapLocations.Contains(foodLocation) || playerLocation.Equals(foodLocation)))
                 {
+                    List<Image> foodSprites = new List<Image>() { Properties.Resources.tileDiamond, Properties.Resources.tileGold };
                     foodLocations.Add(foodLocation);
                     string foodLabel = $"{foodLocation.row}-{foodLocation.col}-food";
-                    Label createdFoodLabel = AddLabel(foodLocation, Color.Transparent, foodLabel, new Bitmap(Properties.Resources.foodIcon));
+                    Label createdFoodLabel = AddLabel(foodLocation, Color.Transparent, foodLabel, new Bitmap(foodSprites[rnd.Next(foodSprites.Count)]));
                     createdFoodLabel.BringToFront();
-                    foodTiles.Add(
-                        foodLabel,
-                        createdFoodLabel
-                    );
+                    foodTiles.Add(foodLabel, createdFoodLabel);
                     found++;
                 }
             }
@@ -295,7 +293,7 @@ namespace USWGame
             string trailLabelName = $"{playerLocation.row}-{playerLocation.col}-trail";
             if (!trailTiles.ContainsKey(trailLabelName))
             {
-                Label createdLabel = AddLabel(playerLocation, Color.Orchid, trailLabelName);
+                Label createdLabel = AddLabel(playerLocation, Color.Orchid, trailLabelName, new Bitmap(Properties.Resources.tileMined));
                 createdLabel.SendToBack();
                 trailTiles.Add(trailLabelName, createdLabel);
             }
@@ -377,16 +375,19 @@ namespace USWGame
             {
                 case 0:
                     lblRisk.BackColor = Color.Transparent;
+                    lblRisk.ForeColor = Color.WhiteSmoke;
                     break;
                 case 1:
                     lblRisk.BackColor = Color.Yellow;
+                    lblRisk.ForeColor = Color.Black;
                     break;
                 case 2:
                     lblRisk.BackColor = Color.Orange;
-                    // Sound.PlaySound(amogus);
+                    lblRisk.ForeColor = Color.Black;
                     break;
                 case 3:
                     lblRisk.BackColor = Color.Red;
+                    lblRisk.ForeColor = Color.Black;
                     break;
             }
         }
@@ -422,7 +423,6 @@ namespace USWGame
         /// </summary>
         private void PlayerOnFood()
         {
-            // Sound.PlaySound(eatnoise);
             score += 10;
             lblScore.Text = score.ToString();
             Sound.PlaySound(Properties.Resources.pickupFood);
