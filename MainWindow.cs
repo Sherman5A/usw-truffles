@@ -188,7 +188,7 @@ namespace USWGame
 
                 if (!(foodLocations.Contains(foodLocation) || trapLocations.Contains(foodLocation) || playerLocation.Equals(foodLocation)))
                 {
-                    List<Image> foodSprites = new List<Image>() { Properties.Resources.tileDiamond, Properties.Resources.tileGold };
+                    List<Image> foodSprites = new List<Image>() { Properties.Resources.tileDiamond, Properties.Resources.tileGold, Properties.Resources.tileRuby };
                     foodLocations.Add(foodLocation);
                     string foodLabel = $"{foodLocation.row}-{foodLocation.col}-food";
                     Label createdFoodLabel = AddLabel(foodLocation, Color.Transparent, foodLabel, new Bitmap(foodSprites[rnd.Next(foodSprites.Count)]));

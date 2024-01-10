@@ -187,6 +187,16 @@ namespace USWGame.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap tileRuby {
+            get {
+                object obj = ResourceManager.GetObject("tileRuby", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap tileTrap {
             get {
                 object obj = ResourceManager.GetObject("tileTrap", resourceCulture);
