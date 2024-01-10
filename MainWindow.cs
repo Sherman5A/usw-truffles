@@ -8,25 +8,26 @@ namespace USWGame
         List<(int row, int col)> trapLocations;
 
         // Gamemap Variables
-        int cellSize;
-        int numRows;
-        int numCols;
+        readonly int cellSize = 64;
+        readonly int numRows;
+        readonly int numCols;
         // Number of squares containing food
-        int numFood;
+        readonly int numFood;
         // Number of squares containing traps
-        int numTraps;
+        readonly int numTraps;
 
         // Control area
         // Extra space x
-        int xLeftMargin = 300;
-        int xRightMargin = 100;
-        int yMargin = 50;
+        const int xLeftMargin = 300;
+        const int xRightMargin = 100;
+        const int yMargin = 50;
 
         // Accept control input
         bool acceptControl = true;
 
         // Default score
         int score = 0;
+        int roundsCompleted = 0;
 
         Label lblPlayer;
         Dictionary<string, Label> foodTiles;
@@ -45,6 +46,7 @@ namespace USWGame
             this.cellSize = cellSize;
 
             InitializeComponent();
+            // Initialise objects
             foodLocations = new();
             trapLocations = new();
             foodTiles = new();
@@ -53,11 +55,18 @@ namespace USWGame
             gameSpace = new Panel();
         }
 
+        /// <summary>
+        /// Setup MainWindow graphical elements
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainWindowLoad(object sender, EventArgs e)
         {
+            // Set movement pad images
             Bitmap btnRightImage = new Bitmap(Properties.Resources.arrow, btnRight.Size);
             btnRight.Image = btnRightImage;
 
+            // Clone image and rotate for next direction
             Bitmap btnDownImage = (Bitmap)btnRightImage.Clone();
             btnDownImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
             btnDown.Image = btnDownImage;
@@ -74,7 +83,6 @@ namespace USWGame
             SetupGameSpace();
 
             AddFood(numFood);
-
             AddTraps(numTraps);
 
             lblPlayer = AddPlayer();
@@ -82,12 +90,18 @@ namespace USWGame
             lblPlayer.BringToFront();
         }
 
+        /// <summary>
+        /// Setup the size of the main window
+        /// </summary>
         private void SetupMainWindow()
         {
             // Size form to accommodate size and number of grid cells and control area
             Size = new Size((numRows * cellSize) + xLeftMargin + xRightMargin, numCols * cellSize + (yMargin * 2));
         }
 
+        /// <summary>
+        /// Set up the gameSpace's variables
+        /// </summary>
         private void SetupGameSpace()
         {
             gameSpace.Size = new Size(numRows * cellSize, numCols * cellSize);
@@ -99,8 +113,11 @@ namespace USWGame
         }
 
         /// <summary>
-        /// Adds the player character to the board
+        /// Returns a constructed player character to the board
         /// </summary>
+        /// <returns>
+        /// The player <c>Label</c> object
+        /// </returns>
         private Label AddPlayer()
         {
             Random rnd = new Random();
@@ -119,6 +136,12 @@ namespace USWGame
             }
         }
 
+        /// <summary>
+        /// Returns a constructed player character to the board
+        /// </summary>
+        /// <returns>
+        /// The player <c>Label</c> object
+        /// </returns>
         private void AddTraps(int numTraps)
         {
             Random rnd = new Random();
@@ -131,19 +154,25 @@ namespace USWGame
                 (int row, int col) trapLocation = (trapRow, trapColumn);
 
                 if (!trapLocations.Contains(trapLocation) &&
-                    !foodLocations.Contains(trapLocation))
+                    !foodLocations.Contains(trapLocation) &&
+                    !playerLocation.Equals(trapLocation)
+                    )
                 {
                     trapLocations.Add(trapLocation);
                     string trapLabel = $"{trapLocation.row}-{trapLocation.col}-trap";
                     trapTiles.Add(
                         trapLabel,
-                        AddLabel(trapLocation, Color.LightGoldenrodYellow, trapLabel, new Bitmap(Properties.Resources.bombIcon), hideDefault: true)
+                        AddLabel(trapLocation, Color.Transparent, trapLabel, new Bitmap(Properties.Resources.bombIcon), hideDefault: false)
                     );
                     found++;
                 }
             }
         }
 
+        /// <summary>
+        /// Creates food Labels and adds them to a dictionary
+        /// </summary>
+        /// <param name="numFood">Number of food labels to add</param>
         private void AddFood(int numFood)
         {
             Random rnd = new Random();
@@ -155,37 +184,56 @@ namespace USWGame
                 int foodCol = rnd.Next(numCols);
                 (int row, int col) foodLocation = (foodRow, foodCol);
 
-                if (!foodLocations.Contains(foodLocation))
+                if (!(foodLocations.Contains(foodLocation) || trapLocations.Contains(foodLocation) || playerLocation.Equals(foodLocation)))
                 {
                     foodLocations.Add(foodLocation);
                     string foodLabel = $"{foodLocation.row}-{foodLocation.col}-food";
+                    Label createdFoodLabel = AddLabel(foodLocation, Color.Transparent, foodLabel, new Bitmap(Properties.Resources.foodIcon));
+                    createdFoodLabel.BringToFront();
                     foodTiles.Add(
                         foodLabel,
-                        AddLabel(foodLocation, Color.DarkRed, foodLabel, new Bitmap(Properties.Resources.foodIcon))
+                        createdFoodLabel
                     );
                     found++;
                 }
             }
         }
 
-        private Label AddLabel((int row, int col) location, Color color, string labelText)
+        /// <summary>
+        /// Constructs a label and assigns it to gameSpace as parent
+        /// </summary>
+        /// <param name="location">Coordinates to place label at</param>
+        /// <param name="colour">Colour of the label</param>
+        /// <param name="labelText">Label's text</param>
+        /// <returns>The constructed <c>Label</c> object</returns>
+        private Label AddLabel((int row, int col) location, Color colour, string labelText)
         {
             // Turn into constructor function, this will allow for code reuse in future with label and label images
-            Label addedLabel = new Label
+            Label addedLabel = new Label()
             {
                 AutoSize = false,
                 Size = new Size(cellSize, cellSize),
                 Name = labelText,
-                BackColor = color,
+                BackColor = colour,
                 Location = new Point(location.row * cellSize, location.col * cellSize),
                 Parent = gameSpace
             };
             return addedLabel;
         }
 
-        private Label AddLabel((int row, int col) location, Color color, string labelText, Bitmap bitmap, bool hideDefault = false)
+        /// <summary>
+        /// Overloaded version of AddLabel.
+        /// Constructs a label and assigns it to gameSpace as parent. Takes a bitmap and optional hide argument.
+        /// </summary>
+        /// <param name="location">Coordinates to place label at</param>
+        /// <param name="colour">Colour of the label</param>
+        /// <param name="labelText">Label's text</param>
+        /// <param name="bitmap">Label's image</param>
+        /// <param name="hideDefault">Whether to hide the label at construction</param>
+        /// <returns>The constructed <c>Label</c> object</returns>
+        private Label AddLabel((int row, int col) location, Color colour, string labelText, Bitmap bitmap, bool hideDefault = false)
         {
-            Label addedLabel = AddLabel(location, color, labelText);
+            Label addedLabel = AddLabel(location, colour, labelText);
             Bitmap resizedBitmap = new Bitmap(bitmap, addedLabel.Size);
             addedLabel.Image = resizedBitmap;
             if (hideDefault)
@@ -195,6 +243,10 @@ namespace USWGame
             return addedLabel;
         }
 
+        /// <summary>
+        /// Process a movement when it is clicked, determining its direction
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Button does not have a tag</exception>
         private void MovementButtonClicked(object sender, EventArgs e)
         {
 
@@ -215,6 +267,15 @@ namespace USWGame
             PlayerMove(movementVector[buttonDirection]);
         }
 
+        /// <summary>
+        /// Takes an integer, and caps the return it to the args min and max
+        /// </summary>
+        /// <param name="val">Integer to compare and return</param>
+        /// <param name="min">Minimum value of the integer</param>
+        /// <param name="max">Maximum value of the integer</param>
+        /// <returns>Integer, if above max, it will be max, if below min, 
+        ///          it will be min, if not it will be the original passed value
+        /// </returns>
         private static int Clamp(int val, int min, int max)
         {
             if (val <= min) return min;
@@ -222,15 +283,18 @@ namespace USWGame
             return val;
         }
 
+        /// <summary>
+        /// Move player and perform collision checks
+        /// </summary>
+        /// <param name="movementVector">Coordinates to move the player by</param>
         private void PlayerMove((int row, int col) movementVector)
         {
             string trailLabelName = $"{playerLocation.row}-{playerLocation.col}-trail";
             if (!trailTiles.ContainsKey(trailLabelName))
             {
-                trailTiles.Add(
-                    trailLabelName,
-                    AddLabel(playerLocation, Color.Orchid, trailLabelName)
-                );
+                Label createdLabel = AddLabel(playerLocation, Color.Orchid, trailLabelName);
+                createdLabel.SendToBack();
+                trailTiles.Add(trailLabelName, createdLabel);
             }
             playerLocation.row = Clamp(playerLocation.row + movementVector.row, 0, numRows - 1);
             playerLocation.col = Clamp(playerLocation.col + movementVector.col, 0, numCols - 1);
@@ -239,6 +303,9 @@ namespace USWGame
             CollisionCheck();
         }
 
+        /// <summary>
+        /// Check if the player collides with any food or traps, perform respective functions if so
+        /// </summary>
         private void CollisionCheck()
         {
             if (trapLocations.Contains(playerLocation))
@@ -254,6 +321,9 @@ namespace USWGame
             ChangeRiskLabel(CountNearbyTraps());
         }
 
+        /// <summary>
+        /// Process for ending game when player hits trap
+        /// </summary>
         private async void PlayerOnTrap()
         {
             btnDown.Enabled = btnRight.Enabled = btnLeft.Enabled = btnUp.Enabled = false;
@@ -264,19 +334,19 @@ namespace USWGame
             {
                 trapLabel.Show();
             }
-            BackColor = Color.LightPink;
+
+            BackColor = Color.IndianRed;
 
             await FlashDeathTile();
 
             MessageBox.Show("You have died");
 
-            QuitEventArgs args = new QuitEventArgs()
-            {
-                PlayerScore = score,
-            };
-            QuitGameEvent(this, args);
+            QuitGame();
         }
 
+        /// <summary>
+        /// Repeatedly swap the depth of trap and player to show clearly the death location
+        /// </summary>
         private async Task FlashDeathTile()
         {
             for (int i = 0; i < 5; i++)
@@ -288,14 +358,18 @@ namespace USWGame
             }
         }
 
+        /// <summary>
+        /// Change the risk label and its colour
+        /// </summary>
+        /// <param name="nearTraps">How many traps the player is by</param>
         private void ChangeRiskLabel(int nearTraps)
         {
             lblRisk.Text = nearTraps.ToString();
-            // Place this into seperate function
+            // Place this into separate function
             switch (nearTraps)
             {
                 case 0:
-                    lblRisk.BackColor = Color.White;
+                    lblRisk.BackColor = Color.Transparent;
                     break;
                 case 1:
                     lblRisk.BackColor = Color.Yellow;
@@ -308,17 +382,24 @@ namespace USWGame
                     break;
             }
         }
+
+        /// <summary>
+        /// Count the adjacent traps next to the player
+        /// </summary>
+        /// <returns>The amount of adjacent traps</returns>
         private int CountNearbyTraps()
         {
-            // List of the relative vectors potential neigbours 
-            List<(int row, int col)> neigbourVectors = new List<(int row, int col)> {
+            // List of the relative vectors potential neighbours 
+            List<(int row, int col)> neighbourVectors = new List<(int row, int col)> {
                 (-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)
             };
 
             int nearTraps = 0;
 
-            foreach (var directionVector in neigbourVectors)
+            // Go through each relative vector to check all adjacent squares
+            foreach ((int row, int col) directionVector in neighbourVectors)
             {
+
                 (int row, int col) checkLocation = (playerLocation.row + directionVector.row, playerLocation.col + directionVector.col);
                 if (trapLocations.Contains(checkLocation))
                 {
@@ -328,19 +409,36 @@ namespace USWGame
             return nearTraps;
         }
 
+        /// <summary>
+        /// Handle when a player collides with a food label
+        /// </summary>
         private void PlayerOnFood()
         {
             score += 10;
             lblScore.Text = score.ToString();
+            string foodLabel = $"{playerLocation.row}-{playerLocation.col}-food";
             foodLocations.Remove(playerLocation);
-            RemoveFood(playerLocation);
+            gameSpace.Controls.Remove(foodTiles[foodLabel]);
+            foodTiles.Remove(foodLabel);
+
+            if (foodTiles.Count == 0)
+            {
+                AddFood(numFood);
+                if (trapTiles.Count < (numRows * numCols) / 4)
+                {
+                    roundsCompleted++;
+                    lblRounds.Text = $"{roundsCompleted}";
+                    // Add traps - Clamp ensures difficultly does is not too high on settings with with few traps
+                    // e.g 100 squares with 5 traps, adds 20 traps when food is collected - too many traps
+                    AddTraps((numRows * numCols) / Clamp(trapTiles.Count, 20, numRows * numCols));
+                }
+            }
         }
 
-        private void RemoveFood((int row, int col) playerLocation)
-        {
-            gameSpace.Controls.Remove(foodTiles[$"{playerLocation.row}-{playerLocation.col}-food"]);
-        }
-
+        /// <summary>
+        /// Override the default ProcessCmdKey to add handling movement keys
+        /// </summary>
+        // Arrow keys are not accessible with default provided functions, so overrides are used
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (acceptControl)
@@ -370,6 +468,28 @@ namespace USWGame
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Exits the game and returns to the main menu
+        /// </summary>
+        private void QuitGame()
+        {
+            QuitEventArgs args = new QuitEventArgs()
+            {
+                PlayerScore = score,
+            };
+            QuitGameEvent(this, args);
+        }
+
+        /// <summary>
+        /// Handle when the quit button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void QuitClicked(object sender, EventArgs e)
+        {
+            QuitGame();
         }
     }
 }

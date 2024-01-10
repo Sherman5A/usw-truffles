@@ -36,97 +36,145 @@
             lblScore = new Label();
             lblRiskTitle = new Label();
             lblScoreTitle = new Label();
+            button1 = new Button();
+            lblRoundsTitle = new Label();
+            lblRounds = new Label();
             SuspendLayout();
             // 
             // btnUp
             // 
+            btnUp.BackColor = Color.Thistle;
             btnUp.Cursor = Cursors.Hand;
-            btnUp.Location = new Point(102, 160);
+            btnUp.Location = new Point(117, 213);
+            btnUp.Margin = new Padding(3, 4, 3, 4);
             btnUp.Name = "btnUp";
-            btnUp.Size = new Size(50, 50);
+            btnUp.Size = new Size(57, 67);
             btnUp.TabIndex = 0;
             btnUp.Tag = "up";
-            btnUp.UseVisualStyleBackColor = true;
+            btnUp.UseVisualStyleBackColor = false;
             btnUp.Click += MovementButtonClicked;
             // 
             // btnRight
             // 
+            btnRight.BackColor = Color.Thistle;
             btnRight.Cursor = Cursors.Hand;
-            btnRight.Location = new Point(164, 213);
+            btnRight.Location = new Point(187, 284);
+            btnRight.Margin = new Padding(3, 4, 3, 4);
             btnRight.Name = "btnRight";
-            btnRight.Size = new Size(50, 50);
+            btnRight.Size = new Size(57, 67);
             btnRight.TabIndex = 1;
             btnRight.Tag = "right";
-            btnRight.UseVisualStyleBackColor = true;
+            btnRight.UseVisualStyleBackColor = false;
             btnRight.Click += MovementButtonClicked;
             // 
             // btnDown
             // 
+            btnDown.BackColor = Color.Thistle;
             btnDown.Cursor = Cursors.Hand;
-            btnDown.Location = new Point(102, 266);
+            btnDown.Location = new Point(117, 355);
+            btnDown.Margin = new Padding(3, 4, 3, 4);
             btnDown.Name = "btnDown";
-            btnDown.Size = new Size(50, 50);
+            btnDown.Size = new Size(57, 67);
             btnDown.TabIndex = 2;
             btnDown.Tag = "down";
-            btnDown.UseVisualStyleBackColor = true;
+            btnDown.UseVisualStyleBackColor = false;
             btnDown.Click += MovementButtonClicked;
             // 
             // btnLeft
             // 
+            btnLeft.BackColor = Color.Thistle;
             btnLeft.Cursor = Cursors.Hand;
-            btnLeft.Location = new Point(40, 213);
+            btnLeft.Location = new Point(46, 284);
+            btnLeft.Margin = new Padding(3, 4, 3, 4);
             btnLeft.Name = "btnLeft";
-            btnLeft.Size = new Size(50, 50);
+            btnLeft.Size = new Size(57, 67);
             btnLeft.TabIndex = 3;
             btnLeft.Tag = "left";
-            btnLeft.UseVisualStyleBackColor = true;
+            btnLeft.UseVisualStyleBackColor = false;
             btnLeft.Click += MovementButtonClicked;
             // 
             // lblRisk
             // 
-            lblRisk.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
-            lblRisk.Location = new Point(111, 338);
+            lblRisk.Font = new Font("Centaur", 24F, FontStyle.Regular, GraphicsUnit.Point);
+            lblRisk.Location = new Point(150, 446);
             lblRisk.Name = "lblRisk";
-            lblRisk.Size = new Size(65, 37);
+            lblRisk.Size = new Size(107, 49);
             lblRisk.TabIndex = 4;
             lblRisk.Text = "0";
             lblRisk.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // lblScore
             // 
-            lblScore.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
-            lblScore.Location = new Point(111, 418);
+            lblScore.Font = new Font("Centaur", 24F, FontStyle.Regular, GraphicsUnit.Point);
+            lblScore.Location = new Point(148, 509);
             lblScore.Name = "lblScore";
-            lblScore.Size = new Size(103, 37);
+            lblScore.Size = new Size(107, 49);
             lblScore.TabIndex = 5;
             lblScore.Text = "0";
             lblScore.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // lblRiskTitle
             // 
-            lblRiskTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point);
-            lblRiskTitle.Location = new Point(31, 338);
+            lblRiskTitle.Font = new Font("High Tower Text", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point);
+            lblRiskTitle.Location = new Point(47, 446);
             lblRiskTitle.Name = "lblRiskTitle";
-            lblRiskTitle.Size = new Size(86, 37);
+            lblRiskTitle.Size = new Size(97, 49);
             lblRiskTitle.TabIndex = 6;
             lblRiskTitle.Text = "Risk:";
             lblRiskTitle.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblScoreTitle
             // 
-            lblScoreTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point);
-            lblScoreTitle.Location = new Point(22, 418);
+            lblScoreTitle.Font = new Font("High Tower Text", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point);
+            lblScoreTitle.Location = new Point(33, 509);
             lblScoreTitle.Name = "lblScoreTitle";
-            lblScoreTitle.Size = new Size(95, 37);
+            lblScoreTitle.Size = new Size(111, 49);
             lblScoreTitle.TabIndex = 7;
             lblScoreTitle.Text = "Score:";
             lblScoreTitle.TextAlign = ContentAlignment.MiddleRight;
             // 
+            // button1
+            // 
+            button1.BackColor = Color.Pink;
+            button1.Cursor = Cursors.Hand;
+            button1.Font = new Font("High Tower Text", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
+            button1.Location = new Point(12, 12);
+            button1.Name = "button1";
+            button1.Size = new Size(245, 65);
+            button1.TabIndex = 8;
+            button1.Text = "Exit Game";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += QuitClicked;
+            // 
+            // lblRoundsTitle
+            // 
+            lblRoundsTitle.Font = new Font("High Tower Text", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point);
+            lblRoundsTitle.Location = new Point(0, 571);
+            lblRoundsTitle.Name = "lblRoundsTitle";
+            lblRoundsTitle.Size = new Size(144, 49);
+            lblRoundsTitle.TabIndex = 9;
+            lblRoundsTitle.Text = "Rounds:";
+            lblRoundsTitle.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // lblRounds
+            // 
+            lblRounds.Font = new Font("Centaur", 24F, FontStyle.Regular, GraphicsUnit.Point);
+            lblRounds.Location = new Point(148, 571);
+            lblRounds.Name = "lblRounds";
+            lblRounds.Size = new Size(107, 49);
+            lblRounds.TabIndex = 10;
+            lblRounds.Text = "0";
+            lblRounds.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // MainWindow
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(961, 766);
+            BackColor = Color.LavenderBlush;
+            ClientSize = new Size(1098, 1021);
+            Controls.Add(lblRounds);
+            Controls.Add(lblRoundsTitle);
+            Controls.Add(button1);
             Controls.Add(lblScoreTitle);
             Controls.Add(lblRiskTitle);
             Controls.Add(lblScore);
@@ -136,6 +184,7 @@
             Controls.Add(btnRight);
             Controls.Add(btnUp);
             FormBorderStyle = FormBorderStyle.Fixed3D;
+            Margin = new Padding(3, 4, 3, 4);
             Name = "MainWindow";
             Text = "Truffles";
             Load += MainWindowLoad;
@@ -152,5 +201,8 @@
         private Label lblScore;
         private Label lblRiskTitle;
         private Label lblScoreTitle;
+        private Button button1;
+        private Label lblRoundsTitle;
+        private Label lblRounds;
     }
 }

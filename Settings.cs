@@ -1,5 +1,8 @@
 ﻿namespace USWGame
 {
+    /// <summary>
+    /// Settings class to manage game settings
+    /// </summary>
     internal class Settings
     {
         private string FilePath { get; set; }
@@ -15,22 +18,33 @@
             ReadSettingsFile();
         }
 
+        /// <summary>
+        /// Saves the object settings state to a file in CSV format
+        /// First element denotes the variable, second variable denotes the value of it
+        /// </summary>
         public void SaveSettings()
         {
             string[] settingsList = ToString().Split(" ");
             File.WriteAllLines(FilePath, settingsList);
         }
 
+        /// <summary>
+        /// Reads and parses the settings file
+        /// </summary>
         public void ReadSettingsFile()
         {
+            // Create the file if it does not exist
             using (FileStream createFileIfNotExist = File.Open(FilePath, FileMode.OpenOrCreate))
             {
+                // Create a file reader
                 StreamReader sr = new StreamReader(createFileIfNotExist);
-                // Read each line unil the end of the file
+                // Read each line until the end of the file
                 string fileLine;
                 while ((fileLine = sr.ReadLine()) != null)
                 {
+                    // Split by comma into arrays
                     string[] splitLine = fileLine.Split(',');
+                    // Switch statement for different variables
                     switch (splitLine[0])
                     {
                         case "NumRows":
@@ -47,6 +61,7 @@
                             break;
                     }
                 }
+                // Close StreamReader to avoid possible leaks 
                 sr.Close();
             }
         }
