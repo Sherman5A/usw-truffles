@@ -37,12 +37,13 @@ namespace USWGame
         public delegate void QuitEventHander(object sender, QuitEventArgs e);
         public event QuitEventHander QuitGameEvent;
 
-        public MainWindow(int numRows, int numCols, int numFood, int numTraps)
+        public MainWindow(int numRows, int numCols, int numFood, int numTraps, int cellSize)
         {
             this.numRows = numRows;
             this.numCols = numCols;
             this.numFood = numFood;
             this.numTraps = numTraps;
+            this.cellSize = cellSize;
 
             InitializeComponent();
             // Initialise objects

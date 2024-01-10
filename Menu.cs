@@ -1,17 +1,22 @@
 ﻿
+using System.Diagnostics;
+
 namespace USWGame
 {
     public partial class Menu : Form
     {
+        Size screenSize;
         private string scoresPath = "scores.txt";
         private MainWindow mainWindow;
         private List<string> scores = new();
         private ListViewNumberSort listNumSort;
         private Settings settings;
+        private int cellSize = 64;
 
         public Menu()
         {
             InitializeComponent();
+            screenSize = Screen.PrimaryScreen.WorkingArea.Size;
             listNumSort = new ListViewNumberSort()
             {
                 OrderSort = SortOrder.Descending,
@@ -64,9 +69,35 @@ namespace USWGame
             Close();
         }
 
+        private bool ValidateDimensions()
+        {
+            Debug.WriteLine(numRow.Value * cellSize > (screenSize.Width - 200));
+            Debug.WriteLine(numCol.Value * cellSize > (screenSize.Height - 200));
+
+            if (numRow.Value * cellSize > (screenSize.Width - 200) || numCol.Value * cellSize > (screenSize.Height - 200))
+            {
+                MessageBox.Show($"Rows or columns too high{Environment.NewLine}" +
+                    $"Screen size: {screenSize.Width}x{screenSize.Height}{Environment.NewLine}" +
+                    $"Game size: {numRow.Value * cellSize}x{numCol.Value * cellSize}"
+                );
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidateItems()
+        {
+            return true;
+        }
+
         private void BtnStartClicked(object sender, EventArgs e)
         {
-            mainWindow = new MainWindow((int)numRow.Value, (int)numCol.Value, (int)numFood.Value, (int)numTraps.Value);
+            if (!ValidateDimensions())
+            {
+                return;
+            }
+
+            mainWindow = new MainWindow((int)numRow.Value, (int)numCol.Value, (int)numFood.Value, (int)numTraps.Value, cellSize);
             mainWindow.Show();
             mainWindow.QuitGameEvent += HandleGameQuitEvent;
             Hide();
@@ -121,6 +152,11 @@ namespace USWGame
 
         private void SaveSettingsClick(object sender, EventArgs e)
         {
+            if (!ValidateDimensions())
+            {
+                return;
+            }
+
             settings.NumRows = (int)numRow.Value;
             settings.NumCols = (int)numCol.Value;
             settings.NumFood = (int)numFood.Value;
