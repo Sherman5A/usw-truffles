@@ -1,17 +1,17 @@
-﻿
-using System.Diagnostics;
+﻿using System.Media;
 
 namespace USWGame
 {
     public partial class Menu : Form
     {
         Size screenSize;
+        private int cellSize = 64;
         private string scoresPath = "scores.txt";
-        private MainWindow mainWindow;
         private List<string> scores = new();
+        private MainWindow mainWindow;
+        private SoundPlayer soundPlayer;
         private ListViewNumberSort listNumSort;
         private Settings settings;
-        private int cellSize = 64;
 
         public Menu()
         {
@@ -30,6 +30,8 @@ namespace USWGame
         /// </summary>
         private void MenuLoad(object sender, EventArgs e)
         {
+            BackgroundImage = new Bitmap(Properties.Resources.settingsBackground, Size);
+            soundPlayer = Sound.PlaySound(Properties.Resources.titleTheme);
             LoadScores();
             AssignSettings();
         }
@@ -84,9 +86,6 @@ namespace USWGame
 
         private bool ValidateDimensions()
         {
-            Debug.WriteLine(numRow.Value * cellSize > (screenSize.Width - 200));
-            Debug.WriteLine(numCol.Value * cellSize > (screenSize.Height - 200));
-
             if (numRow.Value * cellSize > (screenSize.Width - 200) || numCol.Value * cellSize > (screenSize.Height - 200))
             {
                 MessageBox.Show($"Rows or columns too high{Environment.NewLine}" +
@@ -111,6 +110,7 @@ namespace USWGame
             mainWindow = new MainWindow((int)numRow.Value, (int)numCol.Value, (int)numFood.Value, (int)numTraps.Value, cellSize);
             mainWindow.Show();
             mainWindow.QuitGameEvent += HandleGameQuitEvent;
+            soundPlayer.Stop();
             Hide();
         }
 
@@ -123,6 +123,8 @@ namespace USWGame
             File.AppendAllText(scoresPath, e.PlayerScore + Environment.NewLine);
             mainWindow.Close();
             Show();
+            // Resume menu music
+            soundPlayer.Play();
             // Add score to scoreboard
             listScoreView.Items.Add(e.PlayerScore.ToString());
         }

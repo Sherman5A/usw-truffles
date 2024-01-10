@@ -291,7 +291,7 @@ namespace USWGame
         /// <param name="movementVector">Coordinates to move the player by</param>
         private void PlayerMove((int row, int col) movementVector)
         {
-            // Sound.PlaySound(moveNoise);
+            Sound.PlaySound(Properties.Resources.dash);
             string trailLabelName = $"{playerLocation.row}-{playerLocation.col}-trail";
             if (!trailTiles.ContainsKey(trailLabelName))
             {
@@ -343,6 +343,7 @@ namespace USWGame
 
             BackColor = Color.IndianRed;
 
+            Sound.PlaySound(Properties.Resources.explosion);
             await FlashDeathTile();
 
             MessageBox.Show("You have died");
@@ -424,6 +425,7 @@ namespace USWGame
             // Sound.PlaySound(eatnoise);
             score += 10;
             lblScore.Text = score.ToString();
+            Sound.PlaySound(Properties.Resources.pickupFood);
             string foodLabel = $"{playerLocation.row}-{playerLocation.col}-food";
             foodLocations.Remove(playerLocation);
             gameSpace.Controls.Remove(foodTiles[foodLabel]);
@@ -431,6 +433,7 @@ namespace USWGame
 
             if (foodTiles.Count == 0)
             {
+                Sound.PlaySound(Properties.Resources.nextRound);
                 AddFood(numFood);
                 if (trapTiles.Count < (numRows * numCols) / 4)
                 {
