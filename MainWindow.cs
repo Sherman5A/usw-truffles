@@ -291,7 +291,7 @@ namespace USWGame
         /// <param name="movementVector">Coordinates to move the player by</param>
         private void PlayerMove((int row, int col) movementVector)
         {
-            Sound.PlaySound(Properties.Resources.dash);
+            Sound.PlaySound(Properties.Resources.playerMove);
             string trailLabelName = $"{playerLocation.row}-{playerLocation.col}-trail";
             if (!trailTiles.ContainsKey(trailLabelName))
             {
