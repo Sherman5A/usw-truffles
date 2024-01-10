@@ -219,7 +219,6 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources.settings_background;
             ClientSize = new Size(913, 600);
             Controls.Add(btnSaveSettings);
             Controls.Add(lblTitle);
