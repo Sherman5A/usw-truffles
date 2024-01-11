@@ -54,9 +54,10 @@
             // 
             btnStart.BackColor = Color.PeachPuff;
             btnStart.Font = new Font("High Tower Text", 36F, FontStyle.Regular, GraphicsUnit.Point);
-            btnStart.Location = new Point(22, 190);
+            btnStart.Location = new Point(25, 253);
+            btnStart.Margin = new Padding(3, 4, 3, 4);
             btnStart.Name = "btnStart";
-            btnStart.Size = new Size(359, 192);
+            btnStart.Size = new Size(410, 256);
             btnStart.TabIndex = 0;
             btnStart.Text = "Start";
             btnStart.UseVisualStyleBackColor = false;
@@ -66,9 +67,10 @@
             // 
             btnQuit.BackColor = Color.PeachPuff;
             btnQuit.Font = new Font("High Tower Text", 31.8000011F, FontStyle.Regular, GraphicsUnit.Point);
-            btnQuit.Location = new Point(419, 190);
+            btnQuit.Location = new Point(479, 253);
+            btnQuit.Margin = new Padding(3, 4, 3, 4);
             btnQuit.Name = "btnQuit";
-            btnQuit.Size = new Size(359, 192);
+            btnQuit.Size = new Size(410, 256);
             btnQuit.TabIndex = 1;
             btnQuit.Text = "Quit";
             btnQuit.UseVisualStyleBackColor = false;
@@ -76,16 +78,18 @@
             // 
             // numCol
             // 
-            numCol.Location = new Point(146, 99);
+            numCol.Location = new Point(167, 132);
+            numCol.Margin = new Padding(3, 4, 3, 4);
             numCol.Name = "numCol";
-            numCol.Size = new Size(85, 23);
+            numCol.Size = new Size(97, 27);
             numCol.TabIndex = 2;
             // 
             // numRow
             // 
-            numRow.Location = new Point(146, 70);
+            numRow.Location = new Point(167, 93);
+            numRow.Margin = new Padding(3, 4, 3, 4);
             numRow.Name = "numRow";
-            numRow.Size = new Size(85, 23);
+            numRow.Size = new Size(97, 27);
             numRow.TabIndex = 3;
             // 
             // lblNumCol
@@ -93,9 +97,9 @@
             lblNumCol.AutoSize = true;
             lblNumCol.BackColor = Color.Transparent;
             lblNumCol.ForeColor = Color.WhiteSmoke;
-            lblNumCol.Location = new Point(22, 101);
+            lblNumCol.Location = new Point(25, 135);
             lblNumCol.Name = "lblNumCol";
-            lblNumCol.Size = new Size(114, 15);
+            lblNumCol.Size = new Size(140, 20);
             lblNumCol.TabIndex = 4;
             lblNumCol.Text = "Number of columns";
             lblNumCol.TextAlign = ContentAlignment.MiddleRight;
@@ -105,9 +109,9 @@
             lblNumRow.AutoSize = true;
             lblNumRow.BackColor = Color.Transparent;
             lblNumRow.ForeColor = Color.WhiteSmoke;
-            lblNumRow.Location = new Point(44, 71);
+            lblNumRow.Location = new Point(50, 95);
             lblNumRow.Name = "lblNumRow";
-            lblNumRow.Size = new Size(93, 15);
+            lblNumRow.Size = new Size(116, 20);
             lblNumRow.TabIndex = 5;
             lblNumRow.Text = "Number of rows";
             lblNumRow.TextAlign = ContentAlignment.MiddleRight;
@@ -117,11 +121,11 @@
             lblNumFood.AutoSize = true;
             lblNumFood.BackColor = Color.Transparent;
             lblNumFood.ForeColor = Color.WhiteSmoke;
-            lblNumFood.Location = new Point(43, 129);
+            lblNumFood.Location = new Point(40, 171);
             lblNumFood.Name = "lblNumFood";
-            lblNumFood.Size = new Size(93, 15);
+            lblNumFood.Size = new Size(121, 20);
             lblNumFood.TabIndex = 6;
-            lblNumFood.Text = "Amount of food";
+            lblNumFood.Text = "Number of gems";
             lblNumFood.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblNumTraps
@@ -129,32 +133,35 @@
             lblNumTraps.AutoSize = true;
             lblNumTraps.BackColor = Color.Transparent;
             lblNumTraps.ForeColor = Color.WhiteSmoke;
-            lblNumTraps.Location = new Point(42, 158);
+            lblNumTraps.Location = new Point(32, 210);
             lblNumTraps.Name = "lblNumTraps";
-            lblNumTraps.Size = new Size(94, 15);
+            lblNumTraps.Size = new Size(134, 20);
             lblNumTraps.TabIndex = 7;
-            lblNumTraps.Text = "Number of traps";
+            lblNumTraps.Text = "Number of goblins";
             lblNumTraps.TextAlign = ContentAlignment.MiddleRight;
             // 
             // numFood
             // 
-            numFood.Location = new Point(146, 127);
+            numFood.Location = new Point(167, 169);
+            numFood.Margin = new Padding(3, 4, 3, 4);
             numFood.Name = "numFood";
-            numFood.Size = new Size(85, 23);
+            numFood.Size = new Size(97, 27);
             numFood.TabIndex = 8;
             // 
             // numTraps
             // 
-            numTraps.Location = new Point(146, 156);
+            numTraps.Location = new Point(167, 208);
+            numTraps.Margin = new Padding(3, 4, 3, 4);
             numTraps.Name = "numTraps";
-            numTraps.Size = new Size(85, 23);
+            numTraps.Size = new Size(97, 27);
             numTraps.TabIndex = 9;
             // 
             // btnRandomise
             // 
-            btnRandomise.Location = new Point(246, 145);
+            btnRandomise.Location = new Point(281, 193);
+            btnRandomise.Margin = new Padding(3, 4, 3, 4);
             btnRandomise.Name = "btnRandomise";
-            btnRandomise.Size = new Size(135, 30);
+            btnRandomise.Size = new Size(154, 40);
             btnRandomise.TabIndex = 10;
             btnRandomise.Text = "Randomise settings";
             btnRandomise.UseVisualStyleBackColor = true;
@@ -162,9 +169,10 @@
             // 
             // btnDefaultValues
             // 
-            btnDefaultValues.Location = new Point(246, 70);
+            btnDefaultValues.Location = new Point(281, 93);
+            btnDefaultValues.Margin = new Padding(3, 4, 3, 4);
             btnDefaultValues.Name = "btnDefaultValues";
-            btnDefaultValues.Size = new Size(135, 30);
+            btnDefaultValues.Size = new Size(154, 40);
             btnDefaultValues.TabIndex = 11;
             btnDefaultValues.Text = "Load settings";
             btnDefaultValues.UseVisualStyleBackColor = true;
@@ -174,9 +182,10 @@
             // 
             listScoreView.Columns.AddRange(new ColumnHeader[] { colScores });
             listScoreView.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
-            listScoreView.Location = new Point(419, 71);
+            listScoreView.Location = new Point(479, 95);
+            listScoreView.Margin = new Padding(3, 4, 3, 4);
             listScoreView.Name = "listScoreView";
-            listScoreView.Size = new Size(360, 108);
+            listScoreView.Size = new Size(411, 143);
             listScoreView.TabIndex = 12;
             listScoreView.UseCompatibleStateImageBehavior = false;
             listScoreView.View = View.Details;
@@ -193,18 +202,19 @@
             lblTitle.BackColor = Color.Transparent;
             lblTitle.Font = new Font("High Tower Text", 36F, FontStyle.Regular, GraphicsUnit.Point);
             lblTitle.ForeColor = Color.WhiteSmoke;
-            lblTitle.Location = new Point(262, 7);
+            lblTitle.Location = new Point(299, 9);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(255, 57);
+            lblTitle.Size = new Size(356, 71);
             lblTitle.TabIndex = 13;
-            lblTitle.Text = "Food Game";
+            lblTitle.Text = "Dwarf Game";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnSaveSettings
             // 
-            btnSaveSettings.Location = new Point(246, 106);
+            btnSaveSettings.Location = new Point(281, 141);
+            btnSaveSettings.Margin = new Padding(3, 4, 3, 4);
             btnSaveSettings.Name = "btnSaveSettings";
-            btnSaveSettings.Size = new Size(135, 30);
+            btnSaveSettings.Size = new Size(154, 40);
             btnSaveSettings.TabIndex = 14;
             btnSaveSettings.Text = "Save settings";
             btnSaveSettings.UseVisualStyleBackColor = true;
@@ -212,9 +222,9 @@
             // 
             // Menu
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(799, 450);
+            ClientSize = new Size(913, 600);
             Controls.Add(btnSaveSettings);
             Controls.Add(lblTitle);
             Controls.Add(listScoreView);
@@ -230,6 +240,7 @@
             Controls.Add(numCol);
             Controls.Add(btnQuit);
             Controls.Add(btnStart);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "Menu";
             Text = "Main Menu";
             Load += MenuLoad;

@@ -90,6 +90,8 @@ namespace USWGame
             lblPlayer.BringToFront();
         }
 
+        #region Initialisation
+
         /// <summary>
         /// Setup the size of the main window
         /// </summary>
@@ -199,6 +201,8 @@ namespace USWGame
             }
         }
 
+        #endregion
+
         /// <summary>
         /// Constructs a label and assigns it to gameSpace as parent
         /// </summary>
@@ -244,30 +248,6 @@ namespace USWGame
         }
 
         /// <summary>
-        /// Process a movement when it is clicked, determining its direction
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Button does not have a tag</exception>
-        private void MovementButtonClicked(object sender, EventArgs e)
-        {
-            Button buttonPressed = sender as Button;
-            if (buttonPressed.Tag is null)
-            {
-                throw new InvalidOperationException("Expected button sender to have a tag denoting button direction");
-            }
-            // Button's tag contains the direction of the button
-            string buttonDirection = (string)buttonPressed.Tag;
-
-            Dictionary<string, (int row, int col)> movementVector = new()
-            {
-                { "left", ( -1, 0)},
-                { "right", ( 1, 0)},
-                { "up",  (0, -1)},
-                { "down", (0, 1)},
-            };
-            PlayerMove(movementVector[buttonDirection]);
-        }
-
-        /// <summary>
         /// Takes an integer, and caps the return it to the args min and max
         /// </summary>
         /// <param name="val">Integer to compare and return</param>
@@ -282,6 +262,8 @@ namespace USWGame
             if (val > max) return max;
             return val;
         }
+
+        #region Movement
 
         /// <summary>
         /// Move player and perform collision checks
@@ -323,11 +305,69 @@ namespace USWGame
         }
 
         /// <summary>
+        /// Count the adjacent traps next to the player
+        /// </summary>
+        /// <returns>The amount of adjacent traps</returns>
+        private int CountNearbyTraps()
+        {
+            // List of the relative vectors potential neighbours 
+            List<(int row, int col)> neighbourVectors = new List<(int row, int col)> {
+                (-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)
+            };
+
+            int nearTraps = 0;
+
+            // Go through each relative vector to check all adjacent squares
+            foreach ((int row, int col) directionVector in neighbourVectors)
+            {
+
+                (int row, int col) checkLocation = (playerLocation.row + directionVector.row, playerLocation.col + directionVector.col);
+                if (trapLocations.Contains(checkLocation))
+                {
+                    nearTraps++;
+                }
+            }
+            return nearTraps;
+        }
+
+        #endregion
+
+        #region Food, trap, events
+
+        /// <summary>
+        /// Change the risk label and its colour
+        /// </summary>
+        /// <param name="nearTraps">How many traps the player is by</param>
+        private void ChangeRiskLabel(int nearTraps)
+        {
+            lblRisk.Text = nearTraps.ToString();
+            // Place this into separate function
+            switch (nearTraps)
+            {
+                case 0:
+                    lblRisk.BackColor = Color.Transparent;
+                    lblRisk.ForeColor = Color.WhiteSmoke;
+                    break;
+                case 1:
+                    lblRisk.BackColor = Color.Yellow;
+                    lblRisk.ForeColor = Color.Black;
+                    break;
+                case 2:
+                    lblRisk.BackColor = Color.Orange;
+                    lblRisk.ForeColor = Color.Black;
+                    break;
+                case 3:
+                    lblRisk.BackColor = Color.Red;
+                    lblRisk.ForeColor = Color.Black;
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Process for ending game when player hits trap
         /// </summary>
         private async void PlayerOnTrap()
         {
-            // Sound.PlaySound(bombNoise);
             // BackColor = Color.IndianRed;
             btnDown.Enabled = btnRight.Enabled = btnLeft.Enabled = btnUp.Enabled = false;
             // Prevent movement keyboard input
@@ -364,61 +404,6 @@ namespace USWGame
         }
 
         /// <summary>
-        /// Change the risk label and its colour
-        /// </summary>
-        /// <param name="nearTraps">How many traps the player is by</param>
-        private void ChangeRiskLabel(int nearTraps)
-        {
-            lblRisk.Text = nearTraps.ToString();
-            // Place this into separate function
-            switch (nearTraps)
-            {
-                case 0:
-                    lblRisk.BackColor = Color.Transparent;
-                    lblRisk.ForeColor = Color.WhiteSmoke;
-                    break;
-                case 1:
-                    lblRisk.BackColor = Color.Yellow;
-                    lblRisk.ForeColor = Color.Black;
-                    break;
-                case 2:
-                    lblRisk.BackColor = Color.Orange;
-                    lblRisk.ForeColor = Color.Black;
-                    break;
-                case 3:
-                    lblRisk.BackColor = Color.Red;
-                    lblRisk.ForeColor = Color.Black;
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Count the adjacent traps next to the player
-        /// </summary>
-        /// <returns>The amount of adjacent traps</returns>
-        private int CountNearbyTraps()
-        {
-            // List of the relative vectors potential neighbours 
-            List<(int row, int col)> neighbourVectors = new List<(int row, int col)> {
-                (-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)
-            };
-
-            int nearTraps = 0;
-
-            // Go through each relative vector to check all adjacent squares
-            foreach ((int row, int col) directionVector in neighbourVectors)
-            {
-
-                (int row, int col) checkLocation = (playerLocation.row + directionVector.row, playerLocation.col + directionVector.col);
-                if (trapLocations.Contains(checkLocation))
-                {
-                    nearTraps++;
-                }
-            }
-            return nearTraps;
-        }
-
-        /// <summary>
         /// Handle when a player collides with a food label
         /// </summary>
         private void PlayerOnFood()
@@ -444,6 +429,32 @@ namespace USWGame
                     AddTraps((numRows * numCols) / Clamp(trapTiles.Count, 20, numRows * numCols));
                 }
             }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Exits the game and returns to the main menu
+        /// </summary>
+        private void QuitGame()
+        {
+            QuitEventArgs args = new QuitEventArgs()
+            {
+                PlayerScore = score,
+            };
+            QuitGameEvent(this, args);
+        }
+
+        #region Button, key events
+
+        /// <summary>
+        /// Handle when the quit button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void QuitClicked(object sender, EventArgs e)
+        {
+            QuitGame();
         }
 
         /// <summary>
@@ -482,25 +493,28 @@ namespace USWGame
         }
 
         /// <summary>
-        /// Exits the game and returns to the main menu
+        /// Process a movement when it is clicked, determining its direction
         /// </summary>
-        private void QuitGame()
+        /// <exception cref="InvalidOperationException">Button does not have a tag</exception>
+        private void MovementButtonClicked(object sender, EventArgs e)
         {
-            QuitEventArgs args = new QuitEventArgs()
+            Button buttonPressed = sender as Button;
+            if (buttonPressed.Tag is null)
             {
-                PlayerScore = score,
-            };
-            QuitGameEvent(this, args);
-        }
+                throw new InvalidOperationException("Expected button sender to have a tag denoting button direction");
+            }
+            // Button's tag contains the direction of the button
+            string buttonDirection = (string)buttonPressed.Tag;
 
-        /// <summary>
-        /// Handle when the quit button is clicked
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void QuitClicked(object sender, EventArgs e)
-        {
-            QuitGame();
+            Dictionary<string, (int row, int col)> movementVector = new()
+            {
+                { "left", ( -1, 0)},
+                { "right", ( 1, 0)},
+                { "up",  (0, -1)},
+                { "down", (0, 1)},
+            };
+            PlayerMove(movementVector[buttonDirection]);
         }
+        #endregion
     }
 }

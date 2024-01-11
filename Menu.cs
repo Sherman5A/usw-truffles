@@ -78,12 +78,6 @@ namespace USWGame
         /// <summary>
         /// Quit completely out of the main menu
         /// </summary>
-        private void BtnQuitClicked(object sender, EventArgs e)
-        {
-            mainWindow?.Close();
-            Close();
-        }
-
         private bool ValidateDimensions()
         {
             if (numRow.Value * cellSize > (screenSize.Width - 200) || numCol.Value * cellSize > (screenSize.Height - 200))
@@ -95,23 +89,6 @@ namespace USWGame
                 return false;
             }
             return true;
-        }
-
-        /// <summary>
-        /// Starts the game through <c>MainWindow</c> with the provided arguments
-        /// </summary>
-        private void BtnStartClicked(object sender, EventArgs e)
-        {
-            if (!ValidateDimensions())
-            {
-                return;
-            }
-
-            mainWindow = new MainWindow((int)numRow.Value, (int)numCol.Value, (int)numFood.Value, (int)numTraps.Value, cellSize);
-            mainWindow.Show();
-            mainWindow.QuitGameEvent += HandleGameQuitEvent;
-            soundPlayer.Stop();
-            Hide();
         }
 
         /// <summary>
@@ -127,6 +104,32 @@ namespace USWGame
             soundPlayer.Play();
             // Add score to scoreboard
             listScoreView.Items.Add(e.PlayerScore.ToString());
+        }
+
+        #region Button events
+
+        private void BtnQuitClicked(object sender, EventArgs e)
+        {
+            mainWindow?.Close();
+            Close();
+        }
+
+        /// <summary>
+        /// Starts the game through <c>MainWindow</c> with the provided arguments
+        /// </summary>
+        private void BtnStartClicked(object sender, EventArgs e)
+        {
+            if (!ValidateDimensions())
+            {
+                return;
+            }
+
+            mainWindow = new MainWindow((int)numRow.Value, (int)numCol.Value, (int)numFood.Value, (int)numTraps.Value, cellSize);
+            mainWindow.Show();
+            mainWindow.QuitGameEvent += HandleGameQuitEvent;
+            // Stop menu music when game is active
+            soundPlayer.Stop();
+            Hide();
         }
 
         /// <summary>
@@ -194,5 +197,6 @@ namespace USWGame
             settings.NumTraps = (int)numTraps.Value;
             settings.SaveSettings();
         }
+        #endregion
     }
 }

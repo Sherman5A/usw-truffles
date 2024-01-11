@@ -1,4 +1,4 @@
-# USWGame Changelist
+# USWGame Change list
 
 ## New Featues
 
@@ -11,12 +11,14 @@
 - Add a scoreboard to `Menu.cs` through file I/O operations
 - Add scoreboard sorting through `ListNumberSort.cs`
 - Add custom grid sizes through `Menu.cs`
-- Add a settings save function to `Menu.cs` through file I/O operatons
+- Add a settings save function to `Menu.cs` through file I/O operations
 - Add condition when the user collects all of the food 
 - When player died sprite death is swapped to show clearly they landed on a trap
 - Add round counter
 - Add repopulation of food
-- Add more traps as rounds increase
+- Add more traps as round counter increases
+- Change sprites and appearance of game
+- Add sound to the game
 
 ## Rewrites
 
