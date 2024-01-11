@@ -19,6 +19,11 @@
 - Add more traps as round counter increases
 - Change sprites and appearance of game
 - Add sound to the game
+	- Movement sounds
+	- Title background music
+	- Explosion sounds
+	- Pickup sounds
+	- New round sounds
 
 ## Rewrites
 
@@ -26,9 +31,9 @@
 - Player movement rewrote to use less functions
 - Movement button functions rewrote to use a single function with arguments
 - Risk method rewrote to use a list of relative coordinates
-- Reorganise constructor and class properties
-- Rewrite the `AddLabel` function
+- Reorganise class constructors properties
+- Rewrite the `AddLabel` function to construct and return labels
 - Add an `AddLabel` overload for passing Bitmaps
-- Remove `PlotTraps()`, and `PlotFood()` in favour using `Show()` and `Hide()` with `Label` within the `Dictionary` class
+- Remove `PlotTraps()`, and `PlotFood()` in favour of using dictionaries containing labels with the `Show()` and `Hide()` methods
 - Add docstrings to major methods
-- Add sprites to arrows
+- Add sprites to movement arrows
