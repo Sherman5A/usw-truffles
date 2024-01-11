@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace USWGame
 {
     public partial class MainWindow : Form
@@ -6,6 +8,7 @@ namespace USWGame
         (int row, int col) playerLocation;
         List<(int row, int col)> foodLocations;
         List<(int row, int col)> trapLocations;
+        List<(int row, int col)> revealLocations;
 
         // Gamemap Variables
         readonly int cellSize = 64;
@@ -15,6 +18,7 @@ namespace USWGame
         readonly int numFood;
         // Number of squares containing traps
         readonly int numTraps;
+        readonly int numReveals = 1;
 
         // Control area
         // Extra space x
@@ -32,7 +36,9 @@ namespace USWGame
         Label lblPlayer;
         Dictionary<string, Label> foodTiles;
         Dictionary<string, Label> trapTiles;
+        Dictionary<string, Label> revealTiles;
         Dictionary<string, Label> trailTiles;
+
 
         public delegate void QuitEventHander(object sender, QuitEventArgs e);
         public event QuitEventHander QuitGameEvent;
@@ -49,8 +55,10 @@ namespace USWGame
             // Initialise objects
             foodLocations = new();
             trapLocations = new();
+            revealLocations = new();
             foodTiles = new();
             trapTiles = new();
+            revealTiles = new();
             trailTiles = new();
             gameSpace = new Panel();
         }
@@ -84,6 +92,7 @@ namespace USWGame
 
             AddFood(numFood);
             AddTraps(numTraps);
+            AddReveals(numReveals);
 
             lblPlayer = AddPlayer();
             // Bring player to front, over food, traps, trail
@@ -160,12 +169,13 @@ namespace USWGame
                 // Prevent double traps and traps on food
                 if (!trapLocations.Contains(trapLocation) &&
                     !foodLocations.Contains(trapLocation) &&
+                    !revealLocations.Contains(trapLocation) &&
                     !playerLocation.Equals(trapLocation)
                     )
                 {
                     string trapLabelName = $"{trapLocation.row}-{trapLocation.col}-trap";
                     trapLocations.Add(trapLocation);
-                    Label trapLabel = AddLabel(trapLocation, Color.Transparent, trapLabelName, new Bitmap(Properties.Resources.tileTrap), hideDefault: false);
+                    Label trapLabel = AddLabel(trapLocation, Color.Transparent, trapLabelName, new Bitmap(Properties.Resources.tileTrap), hideDefault: true);
                     trapLabel.BringToFront();
                     trapTiles.Add(trapLabelName, trapLabel);
                     found++;
@@ -188,7 +198,7 @@ namespace USWGame
                 int foodCol = rnd.Next(numCols);
                 (int row, int col) foodLocation = (foodRow, foodCol);
 
-                if (!(foodLocations.Contains(foodLocation) || trapLocations.Contains(foodLocation) || playerLocation.Equals(foodLocation)))
+                if (!(foodLocations.Contains(foodLocation) || trapLocations.Contains(foodLocation) || revealLocations.Contains(foodLocation) || playerLocation.Equals(foodLocation)))
                 {
                     List<Image> foodSprites = new List<Image>() { Properties.Resources.tileDiamond, Properties.Resources.tileGold, Properties.Resources.tileRuby };
                     foodLocations.Add(foodLocation);
@@ -196,6 +206,33 @@ namespace USWGame
                     Label createdFoodLabel = AddLabel(foodLocation, Color.Transparent, foodLabel, new Bitmap(foodSprites[rnd.Next(foodSprites.Count)]));
                     createdFoodLabel.BringToFront();
                     foodTiles.Add(foodLabel, createdFoodLabel);
+                    found++;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates reveal labels and adds them to dictionary
+        /// </summary>
+        /// <param name="numReveals"></param>
+        private void AddReveals(int numReveals)
+        {
+            Random rnd = new Random();
+            int found = 0;
+
+            while (found < numReveals)
+            {
+                int revealRow = rnd.Next(numRows);
+                int revealCol = rnd.Next(numCols);
+                (int row, int col) revealLocation = (revealRow, revealCol);
+
+                if (!revealLocations.Contains(revealLocation) || foodLocations.Contains(revealLocation) || trapLocations.Contains(revealLocation) || playerLocation.Equals(revealLocation))
+                {
+                    revealLocations.Add(revealLocation);
+                    string revealLabel = $"{revealLocation.row}-{revealLocation.col}-reveal";
+                    Label createdRevealLabel = AddLabel(revealLocation, Color.Transparent, revealLabel, new Bitmap(Properties.Resources.arrow));
+                    createdRevealLabel.BringToFront();
+                    revealTiles.Add(revealLabel, createdRevealLabel);
                     found++;
                 }
             }
@@ -296,6 +333,11 @@ namespace USWGame
             {
                 PlayerOnTrap();
                 return;
+            }
+
+            if (revealLocations.Contains(playerLocation))
+            {
+                PlayerOnReveal();
             }
 
             if (foodLocations.Contains(playerLocation))
@@ -411,10 +453,10 @@ namespace USWGame
             score += 10;
             lblScore.Text = score.ToString();
             Sound.PlaySound(Properties.Resources.pickupFood);
-            string foodLabel = $"{playerLocation.row}-{playerLocation.col}-food";
+            string foodLabelName = $"{playerLocation.row}-{playerLocation.col}-food";
             foodLocations.Remove(playerLocation);
-            gameSpace.Controls.Remove(foodTiles[foodLabel]);
-            foodTiles.Remove(foodLabel);
+            gameSpace.Controls.Remove(foodTiles[foodLabelName]);
+            foodTiles.Remove(foodLabelName);
 
             if (foodTiles.Count == 0)
             {
@@ -431,6 +473,22 @@ namespace USWGame
             }
         }
 
+        private void PlayerOnReveal()
+        {
+            string revealLabelName = $"{playerLocation.row}-{playerLocation.col}-reveal";
+            revealLocations.Remove(playerLocation);
+            gameSpace.Controls.Remove(revealTiles[revealLabelName]);
+            revealTiles.Remove(revealLabelName);
+
+            // Reveal all traps
+            foreach (Label trapLabel in trapTiles.Values)
+            {
+                Debug.WriteLine(trapLabel.Text);
+                trapLabel.Show();
+            }
+            revealTimer.Start();
+        }
+
         #endregion
 
         /// <summary>
@@ -438,6 +496,7 @@ namespace USWGame
         /// </summary>
         private void QuitGame()
         {
+            revealTimer.Dispose();
             QuitEventArgs args = new QuitEventArgs()
             {
                 PlayerScore = score,
@@ -516,5 +575,15 @@ namespace USWGame
             PlayerMove(movementVector[buttonDirection]);
         }
         #endregion
+
+        private void revealTimer_Tick(object sender, EventArgs e)
+        {
+            foreach (Label trapLabel in trapTiles.Values)
+            {
+                Debug.WriteLine(trapLabel.Text);
+                trapLabel.Hide();
+            }
+            revealTimer.Stop();
+        }
     }
 }

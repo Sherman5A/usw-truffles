@@ -44,6 +44,8 @@
             colScores = new ColumnHeader();
             lblTitle = new Label();
             btnSaveSettings = new Button();
+            label1 = new Label();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)numCol).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numRow).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numFood).BeginInit();
@@ -53,7 +55,8 @@
             // btnStart
             // 
             btnStart.BackColor = Color.PeachPuff;
-            btnStart.Font = new Font("High Tower Text", 36F, FontStyle.Regular, GraphicsUnit.Point);
+            btnStart.BackgroundImageLayout = ImageLayout.Stretch;
+            btnStart.Font = new Font("High Tower Text", 55.8000031F, FontStyle.Regular, GraphicsUnit.Point);
             btnStart.Location = new Point(25, 253);
             btnStart.Margin = new Padding(3, 4, 3, 4);
             btnStart.Name = "btnStart";
@@ -66,7 +69,7 @@
             // btnQuit
             // 
             btnQuit.BackColor = Color.PeachPuff;
-            btnQuit.Font = new Font("High Tower Text", 31.8000011F, FontStyle.Regular, GraphicsUnit.Point);
+            btnQuit.Font = new Font("High Tower Text", 55.8000031F, FontStyle.Regular, GraphicsUnit.Point);
             btnQuit.Location = new Point(479, 253);
             btnQuit.Margin = new Padding(3, 4, 3, 4);
             btnQuit.Name = "btnQuit";
@@ -202,11 +205,11 @@
             lblTitle.BackColor = Color.Transparent;
             lblTitle.Font = new Font("High Tower Text", 36F, FontStyle.Regular, GraphicsUnit.Point);
             lblTitle.ForeColor = Color.WhiteSmoke;
-            lblTitle.Location = new Point(299, 9);
+            lblTitle.Location = new Point(265, 9);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(356, 71);
+            lblTitle.Size = new Size(387, 71);
             lblTitle.TabIndex = 13;
-            lblTitle.Text = "Dwarf Game";
+            lblTitle.Text = "Mine Sweeper";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnSaveSettings
@@ -220,11 +223,37 @@
             btnSaveSettings.UseVisualStyleBackColor = true;
             btnSaveSettings.Click += SaveSettingsClick;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
+            label1.Font = new Font("Segoe UI Emoji", 28.2F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.ForeColor = Color.WhiteSmoke;
+            label1.Location = new Point(172, 9);
+            label1.Name = "label1";
+            label1.Size = new Size(92, 63);
+            label1.TabIndex = 15;
+            label1.Text = "⛏️";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Segoe UI Emoji", 28.2F, FontStyle.Regular, GraphicsUnit.Point);
+            label2.ForeColor = Color.WhiteSmoke;
+            label2.Location = new Point(644, 13);
+            label2.Name = "label2";
+            label2.Size = new Size(92, 63);
+            label2.TabIndex = 16;
+            label2.Text = "⛏️";
+            // 
             // Menu
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(913, 600);
+            ClientSize = new Size(913, 574);
+            Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(btnSaveSettings);
             Controls.Add(lblTitle);
             Controls.Add(listScoreView);
@@ -240,6 +269,7 @@
             Controls.Add(numCol);
             Controls.Add(btnQuit);
             Controls.Add(btnStart);
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             Margin = new Padding(3, 4, 3, 4);
             Name = "Menu";
             Text = "Main Menu";
@@ -270,5 +300,7 @@
         private Label lblTitle;
         private ColumnHeader colScores;
         private Button btnSaveSettings;
+        private Label label1;
+        private Label label2;
     }
 }

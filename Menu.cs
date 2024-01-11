@@ -1,4 +1,5 @@
-﻿using System.Media;
+﻿using System.Diagnostics;
+using System.Media;
 
 namespace USWGame
 {
@@ -97,13 +98,16 @@ namespace USWGame
         /// <param name="e">Object containing score</param>
         private void HandleGameQuitEvent(object sender, QuitEventArgs e)
         {
-            File.AppendAllText(scoresPath, e.PlayerScore + Environment.NewLine);
             mainWindow.Close();
             Show();
-            // Resume menu music
             soundPlayer.Play();
-            // Add score to scoreboard
-            listScoreView.Items.Add(e.PlayerScore.ToString());
+            if (e.PlayerScore > 0)
+            {
+                File.AppendAllText(scoresPath, e.PlayerScore + Environment.NewLine);
+                // Resume menu music
+                // Add score to scoreboard
+                listScoreView.Items.Add(e.PlayerScore.ToString());
+            }
         }
 
         #region Button events
@@ -188,6 +192,7 @@ namespace USWGame
         {
             if (!ValidateDimensions())
             {
+                AssignSettings();
                 return;
             }
 
