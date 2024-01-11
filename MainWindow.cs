@@ -167,11 +167,7 @@ namespace USWGame
                 int trapColumn = rnd.Next(numCols);
                 (int row, int col) trapLocation = (trapRow, trapColumn);
                 // Prevent double traps and traps on food
-                if (!trapLocations.Contains(trapLocation) &&
-                    !foodLocations.Contains(trapLocation) &&
-                    !revealLocations.Contains(trapLocation) &&
-                    !playerLocation.Equals(trapLocation)
-                    )
+                if (!(trapLocations.Contains(trapLocation) || foodLocations.Contains(trapLocation) || revealLocations.Contains(trapLocation) || playerLocation.Equals(trapLocation)))
                 {
                     string trapLabelName = $"{trapLocation.row}-{trapLocation.col}-trap";
                     trapLocations.Add(trapLocation);
@@ -226,11 +222,11 @@ namespace USWGame
                 int revealCol = rnd.Next(numCols);
                 (int row, int col) revealLocation = (revealRow, revealCol);
 
-                if (!revealLocations.Contains(revealLocation) || foodLocations.Contains(revealLocation) || trapLocations.Contains(revealLocation) || playerLocation.Equals(revealLocation))
+                if (!(revealLocations.Contains(revealLocation) || foodLocations.Contains(revealLocation) || trapLocations.Contains(revealLocation) || playerLocation.Equals(revealLocation)))
                 {
                     revealLocations.Add(revealLocation);
                     string revealLabel = $"{revealLocation.row}-{revealLocation.col}-reveal";
-                    Label createdRevealLabel = AddLabel(revealLocation, Color.Transparent, revealLabel, new Bitmap(Properties.Resources.arrow));
+                    Label createdRevealLabel = AddLabel(revealLocation, Color.Transparent, revealLabel, new Bitmap(Properties.Resources.tileReveal));
                     createdRevealLabel.BringToFront();
                     revealTiles.Add(revealLabel, createdRevealLabel);
                     found++;
@@ -464,6 +460,7 @@ namespace USWGame
                 AddFood(numFood);
                 if (trapTiles.Count < (numRows * numCols) / 4)
                 {
+                    AddReveals(numReveals);
                     roundsCompleted++;
                     lblRounds.Text = $"{roundsCompleted}";
                     // Add traps - Clamp ensures difficultly does is not too high on settings with with few traps
@@ -578,12 +575,11 @@ namespace USWGame
 
         private void revealTimer_Tick(object sender, EventArgs e)
         {
+            revealTimer.Stop();
             foreach (Label trapLabel in trapTiles.Values)
             {
-                Debug.WriteLine(trapLabel.Text);
                 trapLabel.Hide();
             }
-            revealTimer.Stop();
         }
     }
 }
