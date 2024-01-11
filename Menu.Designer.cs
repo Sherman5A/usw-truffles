@@ -44,12 +44,15 @@
             colScores = new ColumnHeader();
             lblTitle = new Label();
             btnSaveSettings = new Button();
-            label1 = new Label();
-            label2 = new Label();
+            lblPickaxe2 = new Label();
+            lblPickaxe = new Label();
+            numReveals = new NumericUpDown();
+            lblNumReveals = new Label();
             ((System.ComponentModel.ISupportInitialize)numCol).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numRow).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numFood).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numTraps).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numReveals).BeginInit();
             SuspendLayout();
             // 
             // btnStart
@@ -57,10 +60,9 @@
             btnStart.BackColor = Color.PeachPuff;
             btnStart.BackgroundImageLayout = ImageLayout.Stretch;
             btnStart.Font = new Font("High Tower Text", 55.8000031F, FontStyle.Regular, GraphicsUnit.Point);
-            btnStart.Location = new Point(25, 253);
-            btnStart.Margin = new Padding(3, 4, 3, 4);
+            btnStart.Location = new Point(22, 228);
             btnStart.Name = "btnStart";
-            btnStart.Size = new Size(410, 256);
+            btnStart.Size = new Size(359, 163);
             btnStart.TabIndex = 0;
             btnStart.Text = "Start";
             btnStart.UseVisualStyleBackColor = false;
@@ -70,10 +72,9 @@
             // 
             btnQuit.BackColor = Color.PeachPuff;
             btnQuit.Font = new Font("High Tower Text", 55.8000031F, FontStyle.Regular, GraphicsUnit.Point);
-            btnQuit.Location = new Point(479, 253);
-            btnQuit.Margin = new Padding(3, 4, 3, 4);
+            btnQuit.Location = new Point(419, 228);
             btnQuit.Name = "btnQuit";
-            btnQuit.Size = new Size(410, 256);
+            btnQuit.Size = new Size(359, 163);
             btnQuit.TabIndex = 1;
             btnQuit.Text = "Quit";
             btnQuit.UseVisualStyleBackColor = false;
@@ -81,28 +82,30 @@
             // 
             // numCol
             // 
-            numCol.Location = new Point(167, 132);
-            numCol.Margin = new Padding(3, 4, 3, 4);
+            numCol.Location = new Point(146, 99);
+            numCol.Minimum = new decimal(new int[] { 3, 0, 0, 0 });
             numCol.Name = "numCol";
-            numCol.Size = new Size(97, 27);
+            numCol.Size = new Size(85, 23);
             numCol.TabIndex = 2;
+            numCol.Value = new decimal(new int[] { 3, 0, 0, 0 });
             // 
             // numRow
             // 
-            numRow.Location = new Point(167, 93);
-            numRow.Margin = new Padding(3, 4, 3, 4);
+            numRow.Location = new Point(146, 70);
+            numRow.Minimum = new decimal(new int[] { 3, 0, 0, 0 });
             numRow.Name = "numRow";
-            numRow.Size = new Size(97, 27);
+            numRow.Size = new Size(85, 23);
             numRow.TabIndex = 3;
+            numRow.Value = new decimal(new int[] { 3, 0, 0, 0 });
             // 
             // lblNumCol
             // 
             lblNumCol.AutoSize = true;
             lblNumCol.BackColor = Color.Transparent;
             lblNumCol.ForeColor = Color.WhiteSmoke;
-            lblNumCol.Location = new Point(25, 135);
+            lblNumCol.Location = new Point(22, 101);
             lblNumCol.Name = "lblNumCol";
-            lblNumCol.Size = new Size(140, 20);
+            lblNumCol.Size = new Size(114, 15);
             lblNumCol.TabIndex = 4;
             lblNumCol.Text = "Number of columns";
             lblNumCol.TextAlign = ContentAlignment.MiddleRight;
@@ -112,9 +115,9 @@
             lblNumRow.AutoSize = true;
             lblNumRow.BackColor = Color.Transparent;
             lblNumRow.ForeColor = Color.WhiteSmoke;
-            lblNumRow.Location = new Point(50, 95);
+            lblNumRow.Location = new Point(44, 71);
             lblNumRow.Name = "lblNumRow";
-            lblNumRow.Size = new Size(116, 20);
+            lblNumRow.Size = new Size(93, 15);
             lblNumRow.TabIndex = 5;
             lblNumRow.Text = "Number of rows";
             lblNumRow.TextAlign = ContentAlignment.MiddleRight;
@@ -124,9 +127,9 @@
             lblNumFood.AutoSize = true;
             lblNumFood.BackColor = Color.Transparent;
             lblNumFood.ForeColor = Color.WhiteSmoke;
-            lblNumFood.Location = new Point(40, 171);
+            lblNumFood.Location = new Point(35, 128);
             lblNumFood.Name = "lblNumFood";
-            lblNumFood.Size = new Size(121, 20);
+            lblNumFood.Size = new Size(97, 15);
             lblNumFood.TabIndex = 6;
             lblNumFood.Text = "Number of gems";
             lblNumFood.TextAlign = ContentAlignment.MiddleRight;
@@ -136,35 +139,36 @@
             lblNumTraps.AutoSize = true;
             lblNumTraps.BackColor = Color.Transparent;
             lblNumTraps.ForeColor = Color.WhiteSmoke;
-            lblNumTraps.Location = new Point(32, 210);
+            lblNumTraps.Location = new Point(28, 158);
             lblNumTraps.Name = "lblNumTraps";
-            lblNumTraps.Size = new Size(134, 20);
+            lblNumTraps.Size = new Size(107, 15);
             lblNumTraps.TabIndex = 7;
             lblNumTraps.Text = "Number of goblins";
             lblNumTraps.TextAlign = ContentAlignment.MiddleRight;
             // 
             // numFood
             // 
-            numFood.Location = new Point(167, 169);
-            numFood.Margin = new Padding(3, 4, 3, 4);
+            numFood.Location = new Point(146, 127);
+            numFood.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numFood.Name = "numFood";
-            numFood.Size = new Size(97, 27);
+            numFood.Size = new Size(85, 23);
             numFood.TabIndex = 8;
+            numFood.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // numTraps
             // 
-            numTraps.Location = new Point(167, 208);
-            numTraps.Margin = new Padding(3, 4, 3, 4);
+            numTraps.Location = new Point(146, 156);
+            numTraps.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numTraps.Name = "numTraps";
-            numTraps.Size = new Size(97, 27);
+            numTraps.Size = new Size(85, 23);
             numTraps.TabIndex = 9;
+            numTraps.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // btnRandomise
             // 
-            btnRandomise.Location = new Point(281, 193);
-            btnRandomise.Margin = new Padding(3, 4, 3, 4);
+            btnRandomise.Location = new Point(246, 118);
             btnRandomise.Name = "btnRandomise";
-            btnRandomise.Size = new Size(154, 40);
+            btnRandomise.Size = new Size(135, 41);
             btnRandomise.TabIndex = 10;
             btnRandomise.Text = "Randomise settings";
             btnRandomise.UseVisualStyleBackColor = true;
@@ -172,10 +176,9 @@
             // 
             // btnDefaultValues
             // 
-            btnDefaultValues.Location = new Point(281, 93);
-            btnDefaultValues.Margin = new Padding(3, 4, 3, 4);
+            btnDefaultValues.Location = new Point(246, 70);
             btnDefaultValues.Name = "btnDefaultValues";
-            btnDefaultValues.Size = new Size(154, 40);
+            btnDefaultValues.Size = new Size(135, 42);
             btnDefaultValues.TabIndex = 11;
             btnDefaultValues.Text = "Load settings";
             btnDefaultValues.UseVisualStyleBackColor = true;
@@ -185,10 +188,9 @@
             // 
             listScoreView.Columns.AddRange(new ColumnHeader[] { colScores });
             listScoreView.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
-            listScoreView.Location = new Point(479, 95);
-            listScoreView.Margin = new Padding(3, 4, 3, 4);
+            listScoreView.Location = new Point(419, 71);
             listScoreView.Name = "listScoreView";
-            listScoreView.Size = new Size(411, 143);
+            listScoreView.Size = new Size(360, 138);
             listScoreView.TabIndex = 12;
             listScoreView.UseCompatibleStateImageBehavior = false;
             listScoreView.View = View.Details;
@@ -205,55 +207,77 @@
             lblTitle.BackColor = Color.Transparent;
             lblTitle.Font = new Font("High Tower Text", 36F, FontStyle.Regular, GraphicsUnit.Point);
             lblTitle.ForeColor = Color.WhiteSmoke;
-            lblTitle.Location = new Point(265, 9);
+            lblTitle.Location = new Point(232, 7);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(387, 71);
+            lblTitle.Size = new Size(311, 57);
             lblTitle.TabIndex = 13;
             lblTitle.Text = "Mine Sweeper";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnSaveSettings
             // 
-            btnSaveSettings.Location = new Point(281, 141);
-            btnSaveSettings.Margin = new Padding(3, 4, 3, 4);
+            btnSaveSettings.Location = new Point(246, 168);
             btnSaveSettings.Name = "btnSaveSettings";
-            btnSaveSettings.Size = new Size(154, 40);
+            btnSaveSettings.Size = new Size(135, 41);
             btnSaveSettings.TabIndex = 14;
             btnSaveSettings.Text = "Save settings";
             btnSaveSettings.UseVisualStyleBackColor = true;
             btnSaveSettings.Click += SaveSettingsClick;
             // 
-            // label1
+            // lblPickaxe2
             // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.Transparent;
-            label1.Font = new Font("Segoe UI Emoji", 28.2F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.ForeColor = Color.WhiteSmoke;
-            label1.Location = new Point(172, 9);
-            label1.Name = "label1";
-            label1.Size = new Size(92, 63);
-            label1.TabIndex = 15;
-            label1.Text = "⛏️";
+            lblPickaxe2.AutoSize = true;
+            lblPickaxe2.BackColor = Color.Transparent;
+            lblPickaxe2.Font = new Font("Segoe UI Emoji", 28.2F, FontStyle.Regular, GraphicsUnit.Point);
+            lblPickaxe2.ForeColor = Color.WhiteSmoke;
+            lblPickaxe2.Location = new Point(150, 7);
+            lblPickaxe2.Name = "lblPickaxe2";
+            lblPickaxe2.Size = new Size(74, 51);
+            lblPickaxe2.TabIndex = 15;
+            lblPickaxe2.Text = "⛏️";
             // 
-            // label2
+            // lblPickaxe
             // 
-            label2.AutoSize = true;
-            label2.BackColor = Color.Transparent;
-            label2.Font = new Font("Segoe UI Emoji", 28.2F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.ForeColor = Color.WhiteSmoke;
-            label2.Location = new Point(644, 13);
-            label2.Name = "label2";
-            label2.Size = new Size(92, 63);
-            label2.TabIndex = 16;
-            label2.Text = "⛏️";
+            lblPickaxe.AutoSize = true;
+            lblPickaxe.BackColor = Color.Transparent;
+            lblPickaxe.Font = new Font("Segoe UI Emoji", 28.2F, FontStyle.Regular, GraphicsUnit.Point);
+            lblPickaxe.ForeColor = Color.WhiteSmoke;
+            lblPickaxe.Location = new Point(564, 10);
+            lblPickaxe.Name = "lblPickaxe";
+            lblPickaxe.Size = new Size(74, 51);
+            lblPickaxe.TabIndex = 16;
+            lblPickaxe.Text = "⛏️";
+            // 
+            // numReveals
+            // 
+            numReveals.Location = new Point(146, 186);
+            numReveals.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numReveals.Name = "numReveals";
+            numReveals.Size = new Size(85, 23);
+            numReveals.TabIndex = 18;
+            numReveals.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // lblNumReveals
+            // 
+            lblNumReveals.AutoSize = true;
+            lblNumReveals.BackColor = Color.Transparent;
+            lblNumReveals.ForeColor = Color.WhiteSmoke;
+            lblNumReveals.Location = new Point(28, 188);
+            lblNumReveals.Name = "lblNumReveals";
+            lblNumReveals.Size = new Size(104, 15);
+            lblNumReveals.TabIndex = 17;
+            lblNumReveals.Text = "Number of reveals";
+            lblNumReveals.TextAlign = ContentAlignment.MiddleRight;
             // 
             // Menu
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(913, 574);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            ClientSize = new Size(799, 430);
+            Controls.Add(numReveals);
+            Controls.Add(lblNumReveals);
+            Controls.Add(lblPickaxe);
+            Controls.Add(lblPickaxe2);
             Controls.Add(btnSaveSettings);
             Controls.Add(lblTitle);
             Controls.Add(listScoreView);
@@ -270,7 +294,6 @@
             Controls.Add(btnQuit);
             Controls.Add(btnStart);
             FormBorderStyle = FormBorderStyle.Fixed3D;
-            Margin = new Padding(3, 4, 3, 4);
             Name = "Menu";
             Text = "Main Menu";
             Load += MenuLoad;
@@ -278,6 +301,7 @@
             ((System.ComponentModel.ISupportInitialize)numRow).EndInit();
             ((System.ComponentModel.ISupportInitialize)numFood).EndInit();
             ((System.ComponentModel.ISupportInitialize)numTraps).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numReveals).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -300,7 +324,9 @@
         private Label lblTitle;
         private ColumnHeader colScores;
         private Button btnSaveSettings;
-        private Label label1;
-        private Label label2;
+        private Label lblPickaxe2;
+        private Label lblPickaxe;
+        private NumericUpDown numReveals;
+        private Label lblNumReveals;
     }
 }

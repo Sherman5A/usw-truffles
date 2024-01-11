@@ -11,6 +11,7 @@
         public int NumCols { get; set; } = 17;
         public int NumTraps { get; set; } = 10;
         public int NumFood { get; set; } = 8;
+        public int NumReveals { get; set; } = 1;
 
         public Settings()
         {
@@ -59,6 +60,9 @@
                         case "NumFood":
                             NumFood = int.Parse(splitLine[1]);
                             break;
+                        case "NumReaveals":
+                            NumReveals = int.Parse(splitLine[1]); 
+                            break;
                     }
                 }
                 // Close StreamReader to avoid possible leaks 
@@ -67,7 +71,7 @@
         }
         public override string ToString()
         {
-            return $"NumRows,{NumRows} NumCols,{NumCols} NumFood,{NumFood} NumTraps,{NumTraps}";
+            return $"NumRows,{NumRows} NumCols,{NumCols} NumFood,{NumFood} NumTraps,{NumTraps} NumReveals,{NumReveals}";
         }
     }
 }

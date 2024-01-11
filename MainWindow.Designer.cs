@@ -183,7 +183,7 @@
             // revealTimer
             // 
             revealTimer.Interval = 1000;
-            revealTimer.Tick += revealTimer_Tick;
+            revealTimer.Tick += RevealDurationComplete;
             // 
             // MainWindow
             // 

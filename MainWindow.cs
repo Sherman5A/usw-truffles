@@ -18,7 +18,7 @@ namespace USWGame
         readonly int numFood;
         // Number of squares containing traps
         readonly int numTraps;
-        readonly int numReveals = 1;
+        readonly int numReveals;
 
         // Control area
         // Extra space x
@@ -43,12 +43,13 @@ namespace USWGame
         public delegate void QuitEventHander(object sender, QuitEventArgs e);
         public event QuitEventHander QuitGameEvent;
 
-        public MainWindow(int numRows, int numCols, int numFood, int numTraps, int cellSize)
+        public MainWindow(int numRows, int numCols, int numFood, int numTraps, int numReveals, int cellSize)
         {
             this.numRows = numRows;
             this.numCols = numCols;
             this.numFood = numFood;
             this.numTraps = numTraps;
+            this.numReveals = numReveals;
             this.cellSize = cellSize;
 
             InitializeComponent();
@@ -472,6 +473,7 @@ namespace USWGame
 
         private void PlayerOnReveal()
         {
+            Sound.PlaySound(Properties.Resources.pickupReveal);
             string revealLabelName = $"{playerLocation.row}-{playerLocation.col}-reveal";
             revealLocations.Remove(playerLocation);
             gameSpace.Controls.Remove(revealTiles[revealLabelName]);
@@ -484,6 +486,15 @@ namespace USWGame
                 trapLabel.Show();
             }
             revealTimer.Start();
+        }
+
+        private void RevealDurationComplete(object sender, EventArgs e)
+        {
+            revealTimer.Stop();
+            foreach (Label trapLabel in trapTiles.Values)
+            {
+                trapLabel.Hide();
+            }
         }
 
         #endregion
@@ -572,14 +583,5 @@ namespace USWGame
             PlayerMove(movementVector[buttonDirection]);
         }
         #endregion
-
-        private void revealTimer_Tick(object sender, EventArgs e)
-        {
-            revealTimer.Stop();
-            foreach (Label trapLabel in trapTiles.Values)
-            {
-                trapLabel.Hide();
-            }
-        }
     }
 }

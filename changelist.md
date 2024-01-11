@@ -19,11 +19,13 @@
 - Add more traps as round counter increases
 - Change sprites and appearance of game
 - Add sound to the game
-	- Movement sounds
+	- Movement sound
 	- Title background music
-	- Explosion sounds
-	- Pickup sounds
-	- New round sounds
+	- Explosion sound
+	- Pickup sound
+	- New round sound
+	- Reveal tile sound
+- Add a reveal tile
 
 ## Rewrites
 

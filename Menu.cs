@@ -18,6 +18,7 @@ namespace USWGame
         {
             InitializeComponent();
             screenSize = Screen.PrimaryScreen.WorkingArea.Size;
+
             listNumSort = new ListViewNumberSort()
             {
                 OrderSort = SortOrder.Descending,
@@ -47,6 +48,7 @@ namespace USWGame
             numCol.Value = settings.NumCols;
             numTraps.Value = settings.NumTraps;
             numFood.Value = settings.NumFood;
+            numReveals.Value = settings.NumReveals;
         }
 
         /// <summary>
@@ -81,11 +83,24 @@ namespace USWGame
         /// </summary>
         private bool ValidateDimensions()
         {
-            if (numRow.Value * cellSize > (screenSize.Width - 200) || numCol.Value * cellSize > (screenSize.Height - 200))
+            if (numRow.Value * cellSize > (screenSize.Width - 450) || numCol.Value * cellSize > (screenSize.Height - 150))
             {
                 MessageBox.Show($"Rows or columns too high{Environment.NewLine}" +
                     $"Screen size: {screenSize.Width}x{screenSize.Height}{Environment.NewLine}" +
                     $"Game size: {numRow.Value * cellSize}x{numCol.Value * cellSize}"
+                );
+                return false;
+            }
+
+            // Check if the user selected too many traps, reveals, or food
+            int specialTiles = (int)(numTraps.Value + numReveals.Value + numFood.Value + 1);
+            // -1 accounts for the player
+            int availableTiles = (int)((numRow.Value * numCol.Value) - specialTiles);
+            if (availableTiles < 0)
+            {
+                MessageBox.Show($"Too many special tiles{Environment.NewLine}" +
+                    $"Number of special tiles: {specialTiles}{Environment.NewLine}" +
+                    $"Number of total tiles: {numRow.Value * numCol.Value}"
                 );
                 return false;
             }
@@ -128,7 +143,7 @@ namespace USWGame
                 return;
             }
 
-            mainWindow = new MainWindow((int)numRow.Value, (int)numCol.Value, (int)numFood.Value, (int)numTraps.Value, cellSize);
+            mainWindow = new MainWindow((int)numRow.Value, (int)numCol.Value, (int)numFood.Value, (int)numTraps.Value, (int)numReveals.Value, cellSize);
             mainWindow.Show();
             mainWindow.QuitGameEvent += HandleGameQuitEvent;
             // Stop menu music when game is active
@@ -162,8 +177,8 @@ namespace USWGame
             // Randomise all values for generation
 
             // Randomise grid size first to prevent having too many mines / traps
-            int randCols = random.Next(5, 30);
-            int randRows = random.Next(5, 30);
+            int randRows = random.Next(5, (screenSize.Width - 400) / cellSize);
+            int randCols = random.Next(5, (screenSize.Height - 150) / cellSize);
 
             int totalCells = randRows * randCols;
 
@@ -190,6 +205,7 @@ namespace USWGame
         /// </summary>
         private void SaveSettingsClick(object sender, EventArgs e)
         {
+            // Load the default settings if save attempt is not valid
             if (!ValidateDimensions())
             {
                 AssignSettings();
@@ -200,6 +216,7 @@ namespace USWGame
             settings.NumCols = (int)numCol.Value;
             settings.NumFood = (int)numFood.Value;
             settings.NumTraps = (int)numTraps.Value;
+            settings.NumReveals = (int)numReveals.Value;
             settings.SaveSettings();
         }
         #endregion
