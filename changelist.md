@@ -26,6 +26,7 @@
 	- New round sound
 	- Reveal tile sound
 - Add a reveal tile
+- Add icon to game
 
 ## Rewrites
 

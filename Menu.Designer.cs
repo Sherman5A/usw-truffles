@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             btnStart = new Button();
             btnQuit = new Button();
             numCol = new NumericUpDown();
@@ -168,7 +169,7 @@
             // 
             btnRandomise.Location = new Point(246, 118);
             btnRandomise.Name = "btnRandomise";
-            btnRandomise.Size = new Size(135, 41);
+            btnRandomise.Size = new Size(135, 40);
             btnRandomise.TabIndex = 10;
             btnRandomise.Text = "Randomise settings";
             btnRandomise.UseVisualStyleBackColor = true;
@@ -178,7 +179,7 @@
             // 
             btnDefaultValues.Location = new Point(246, 70);
             btnDefaultValues.Name = "btnDefaultValues";
-            btnDefaultValues.Size = new Size(135, 42);
+            btnDefaultValues.Size = new Size(135, 40);
             btnDefaultValues.TabIndex = 11;
             btnDefaultValues.Text = "Load settings";
             btnDefaultValues.UseVisualStyleBackColor = true;
@@ -218,7 +219,7 @@
             // 
             btnSaveSettings.Location = new Point(246, 168);
             btnSaveSettings.Name = "btnSaveSettings";
-            btnSaveSettings.Size = new Size(135, 41);
+            btnSaveSettings.Size = new Size(135, 40);
             btnSaveSettings.TabIndex = 14;
             btnSaveSettings.Text = "Save settings";
             btnSaveSettings.UseVisualStyleBackColor = true;
@@ -294,6 +295,7 @@
             Controls.Add(btnQuit);
             Controls.Add(btnStart);
             FormBorderStyle = FormBorderStyle.Fixed3D;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Menu";
             Text = "Main Menu";
             Load += MenuLoad;
